@@ -6,7 +6,7 @@
 
 请在仓库右侧的 **Releases** 中下载：
 
-- `植物大战僵尸杂交版v0.25-macOS-Release.zip`
+- `v0.25-macOS-Release.zip`
 - 对应的 `.sha256` 校验文件
 
 ## 系统要求
