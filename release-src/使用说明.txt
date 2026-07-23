@@ -1,0 +1,35 @@
+植物大战僵尸杂交版 v0.25 — macOS Release
+
+系统要求
+• macOS 13 或更高版本
+• Intel Mac：可直接运行
+• Apple 芯片 Mac（M1/M2/M3/M4 等）：需要 Rosetta 2
+• 不需要 Windows，也不需要 CrossOver
+
+安装
+1. 完整解压 ZIP。
+2. 把“植物大战僵尸杂交版v0.25.app”拖入“应用程序”。
+3. 首次运行时右键应用，选择“打开”，然后再次选择“打开”。
+   这是因为此发行包没有 Apple Developer ID 公证，不代表文件损坏。
+4. 如果系统仍拦截，请前往“系统设置 → 隐私与安全性”，选择“仍要打开”。
+
+Apple 芯片 Mac
+如果提示无法启动，请先在“终端”运行：
+
+softwareupdate --install-rosetta
+
+按照系统提示完成 Rosetta 2 安装，然后重新打开游戏。
+
+控制台
+• 按键盘左上角、Esc 下方的 ` / ~ 键打开。
+• /coin 100000
+• /debug openalllevel on
+• 进入关卡后输入 /win，可按正常结算流程记录通关。
+
+存档位置
+~/Library/Application Support/Godot/app_userdata/植物大战僵尸杂交版/
+
+说明
+• 本发行包已经包含 Godot 4.7 Stable Mono、.NET 9 x64 运行时、游戏数据和指令参数修复。
+• 不包含制作者电脑上的个人存档。
+• 游戏运行时使用 x86_64 架构，以兼容该版本原始程序集。

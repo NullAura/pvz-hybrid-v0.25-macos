@@ -1,0 +1,61 @@
+<Project Sdk="Godot.NET.Sdk/4.7.0">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AssemblyName>PlantsVsZombies</AssemblyName>
+    <RootNamespace>PVZHybridReleaseHost</RootNamespace>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeAnalysis">
+      <HintPath>../../PVZ-Hybrid-0.25-native/.godot/mono/temp/bin/Debug/Microsoft.CodeAnalysis.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp">
+      <HintPath>../../PVZ-Hybrid-0.25-native/.godot/mono/temp/bin/Debug/Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <HintPath>../../PVZ-Hybrid-0.25-native/.godot/mono/temp/bin/Debug/Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection">
+      <HintPath>../../PVZ-Hybrid-0.25-native/.godot/mono/temp/bin/Debug/Microsoft.Extensions.DependencyInjection.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+      <HintPath>../../PVZ-Hybrid-0.25-native/.godot/mono/temp/bin/Debug/Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging">
+      <HintPath>../../PVZ-Hybrid-0.25-native/.godot/mono/temp/bin/Debug/Microsoft.Extensions.Logging.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options">
+      <HintPath>../../PVZ-Hybrid-0.25-native/.godot/mono/temp/bin/Debug/Microsoft.Extensions.Options.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives">
+      <HintPath>../../PVZ-Hybrid-0.25-native/.godot/mono/temp/bin/Debug/Microsoft.Extensions.Primitives.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="System.IO.Hashing">
+      <HintPath>../../PVZ-Hybrid-0.25-native/.godot/mono/temp/bin/Debug/System.IO.Hashing.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Utf8StringInterpolation">
+      <HintPath>../../PVZ-Hybrid-0.25-native/.godot/mono/temp/bin/Debug/Utf8StringInterpolation.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="ZLogger">
+      <HintPath>../../PVZ-Hybrid-0.25-native/.godot/mono/temp/bin/Debug/ZLogger.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="ZString">
+      <HintPath>../../PVZ-Hybrid-0.25-native/.godot/mono/temp/bin/Debug/ZString.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

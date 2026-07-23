@@ -1,0 +1,29 @@
+.DS_Store
+
+# Local runtimes and reverse-engineering/build workspaces
+/.dotnet9-x64/
+/.tools/
+/Godot-4.7-mono/
+/PVZ-Hybrid-0.25-native/
+
+# Local launchers and installed applications
+/*.command
+/*.app/
+
+# Game archives and generated releases are uploaded as GitHub Release assets
+/*.zip
+/release/
+
+# Intermediate probes and generated icon assets
+/release-src/csharp-export-probe/
+/release-src/layout-probe/
+/release-src/AppIcon.iconset/
+/release-src/AppIcon.icns
+/release-src/PVZHybridLauncher
+/release-src/make_macos_dotnet_metadata.py
+/release-src/dotnet-host/
+
+# Build artifacts
+**/.godot/
+**/bin/
+**/obj/
