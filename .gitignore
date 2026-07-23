@@ -1,6 +1,6 @@
 .DS_Store
 
-# Local runtimes and reverse-engineering/build workspaces
+# Local runtimes and build workspaces
 /.dotnet9-x64/
 /.tools/
 /Godot-4.7-mono/

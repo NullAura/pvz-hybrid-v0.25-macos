@@ -1,21 +1,32 @@
-# 植物大战僵尸杂交版 v0.25 — macOS 兼容版
+# 植物大战僵尸杂交版 v0.25 for macOS
 
-这是面向 macOS 的非官方兼容发行包。应用内已经包含 Godot 4.7 Stable Mono、.NET 9 x64 运行时和游戏数据，不需要安装 Windows 或 CrossOver。
+本项目为《植物大战僵尸杂交版》v0.25 提供非官方 macOS 兼容发行方案。发行包集成运行游戏所需的 Godot 与 .NET 组件，无需安装 Windows 或 CrossOver。
+
+> 本项目与游戏原作者、发行方及相关权利人无隶属或授权关系。
 
 ## 下载
 
-请在仓库右侧的 **Releases** 中下载：
+请从 [Releases](https://github.com/NullAura/pvz-hybrid-v0.25-macos/releases/latest) 下载以下文件：
 
 - `v0.25-macOS-Release.zip`
-- 对应的 `.sha256` 校验文件
+- `v0.25-macOS-Release.zip.sha256`
 
-## 系统要求
+可在终端中校验文件完整性：
 
-- macOS 13 或更高版本
-- Intel Mac：直接运行
-- Apple 芯片 Mac（M1/M2/M3/M4 等）：需要 Rosetta 2
+```sh
+shasum -a 256 -c v0.25-macOS-Release.zip.sha256
+```
 
-Apple 芯片 Mac 如未安装 Rosetta 2，可在终端运行：
+## 兼容性
+
+| 项目 | 要求 |
+| --- | --- |
+| 操作系统 | macOS 13 或更高版本 |
+| Intel Mac | 原生运行 |
+| Apple 芯片 Mac | 通过 Rosetta 2 运行 |
+| 游戏架构 | x86_64 |
+
+Apple 芯片 Mac 如尚未安装 Rosetta 2，可执行：
 
 ```sh
 softwareupdate --install-rosetta
@@ -23,28 +34,58 @@ softwareupdate --install-rosetta
 
 ## 安装
 
-1. 完整解压下载的 ZIP。
-2. 将 `植物大战僵尸杂交版v0.25.app` 拖入“应用程序”。
-3. 首次启动时右键应用，选择“打开”，然后再次选择“打开”。
-4. 如果系统仍然拦截，请进入“系统设置 → 隐私与安全性”，选择“仍要打开”。
+1. 下载并完整解压 Release ZIP。
+2. 将 `植物大战僵尸杂交版v0.25.app` 拖入“应用程序”文件夹。
+3. 首次启动时右键应用并选择“打开”。
+4. 如果 macOS 继续阻止启动，请在“系统设置 → 隐私与安全性”中选择“仍要打开”。
 
-发行包使用临时签名，没有 Apple Developer ID 公证，因此首次启动需要手动确认。
+当前发行包采用 ad-hoc 签名，未经过 Apple Developer ID 公证，因此首次启动需要由用户手动确认。
 
-## 已包含的修复
+## 兼容性调整
 
-- 修复 `/coin 100000` 金币被写成 0 的问题
-- 恢复图形指令面板
-- 修复 `/debug openalllevel on`
-- 支持 `/win` 按正常结算流程记录当前关卡通关
-- 自包含 macOS x86_64 运行环境
+- 修正控制台数值参数的解析逻辑，包括 `/coin 100000`
+- 恢复游戏内图形指令面板
+- 修正 `/debug openalllevel on` 的指令处理
+- 支持使用 `/win` 进入正常关卡结算流程
+- 提供自包含的 Godot 4.7 Stable Mono 与 .NET 9 x64 运行环境
 
-## 验证结果
+## 指令控制台
 
-- 从最终 ZIP 解压后通过 macOS 深度签名校验
-- 中文及 Unicode 文件名均带 UTF-8 标记
-- 冷启动成功并加载 37 张地图
-- 不包含打包者的个人存档
+按键盘左上角、`Esc` 下方的 `` ` / ~ `` 键打开控制台。常用指令：
 
-## 说明
+```text
+/coin 100000
+/debug openalllevel on
+/win
+```
 
-这是非官方 macOS 兼容包。游戏内容及相关素材的权利归原作者和相应权利人所有；本仓库仅保存兼容启动器源码和发行说明。
+`/win` 应在进入关卡后使用。
+
+## 存档与日志
+
+存档目录：
+
+```text
+~/Library/Application Support/Godot/app_userdata/植物大战僵尸杂交版/
+```
+
+启动器日志：
+
+```text
+~/Library/Logs/PVZHybrid025/launcher.log
+```
+
+更新或重新安装前，建议自行备份存档目录。
+
+## 已知限制
+
+- Apple 芯片设备需要 Rosetta 2
+- 当前版本不提供 arm64 原生游戏运行时
+- 发行包未经过 Apple 公证
+- 联机、更新检查等上游功能可能受网络环境或服务状态影响
+
+## 项目范围
+
+代码仓库保存 macOS 启动器源码、应用元数据和发行说明。完整游戏包通过 GitHub Releases 提供，不纳入 Git 历史。
+
+游戏内容、名称、商标及相关素材的权利归其各自权利人所有。Godot Engine 按 MIT License 分发。本项目仅用于提供 macOS 兼容性支持。

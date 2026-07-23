@@ -71,10 +71,10 @@ int main(int argc, const char *argv[])
 
         if (missing.count > 0) {
             ShowError(
-                @"游戏文件不完整 / Incomplete game package",
+                @"发行包不完整 / Incomplete Package",
                 [NSString stringWithFormat:
-                    @"缺少以下组件：%@\n\n请重新解压完整的发行包。\n"
-                     "Missing components: %@\n\nPlease extract the complete release again.",
+                    @"缺少必要组件：%@\n\n请重新下载并完整解压发行包。\n"
+                     "Required components are missing: %@\n\nPlease download and extract the complete package again.",
                     [missing componentsJoinedByString:@", "],
                     [missing componentsJoinedByString:@", "]]
             );
@@ -99,10 +99,10 @@ int main(int argc, const char *argv[])
         if (![task launchAndReturnError:&launchError]) {
             [logHandle closeFile];
             ShowError(
-                @"游戏启动失败 / Launch failed",
+                @"无法启动游戏 / Unable to Launch",
                 [NSString stringWithFormat:
-                    @"%@\n\n日志：%@\n\nApple 芯片 Mac 需要先安装 Rosetta 2。\n"
-                     "Log: %@\n\nApple Silicon Macs require Rosetta 2.",
+                    @"%@\n\n日志文件：%@\n\nApple 芯片 Mac 请确认已经安装 Rosetta 2。\n"
+                     "Log file: %@\n\nOn Apple Silicon, make sure Rosetta 2 is installed.",
                     launchError.localizedDescription, logPath, logPath]
             );
             return 3;
@@ -114,11 +114,11 @@ int main(int argc, const char *argv[])
 
         if (status != 0) {
             ShowError(
-                @"游戏异常退出 / Game exited unexpectedly",
+                @"游戏已意外退出 / Unexpected Exit",
                 [NSString stringWithFormat:
-                    @"退出代码：%d\n日志：%@\n\n"
-                     "如果使用 Apple 芯片 Mac，请确认已安装 Rosetta 2。\n"
-                     "Exit code: %d\nLog: %@\n\n"
+                    @"退出代码：%d\n日志文件：%@\n\n"
+                     "Apple 芯片 Mac 请确认已经安装 Rosetta 2。\n"
+                     "Exit code: %d\nLog file: %@\n\n"
                      "On Apple Silicon, make sure Rosetta 2 is installed.",
                     status, logPath, status, logPath]
             );
