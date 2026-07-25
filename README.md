@@ -48,6 +48,7 @@ Rosetta 2 状态。升级安装会替换旧 App，但不会删除用户目录中
 - 恢复游戏内图形指令面板
 - 修正 `/debug openalllevel on` 的指令处理
 - 支持使用 `/win` 进入正常关卡结算流程
+- 修复友方、魅惑及玩家控制的僵尸被计入敌方目标，导致波次或关卡无法结束
 - 提供自包含的 Godot 4.7 Stable Mono 与 .NET 9 x64 运行环境
 
 ## 指令控制台
@@ -88,6 +89,9 @@ Rosetta 2 状态。升级安装会替换旧 App，但不会删除用户目录中
 
 安装器构建脚本、双语界面资源、Rosetta 检测逻辑与 Developer ID/公证参数
 位于 [`release-src/installer`](release-src/installer/README.md)。
+
+对上游程序集进行兼容性修复的可复现工具及使用方式位于
+[`PvzAssemblyPatcher`](.tools/PvzAssemblyPatcher/README.md)。
 
 ## 项目范围
 

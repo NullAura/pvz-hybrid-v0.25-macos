@@ -2,7 +2,11 @@
 
 # Local runtimes and build workspaces
 /.dotnet9-x64/
-/.tools/
+/.tools/*
+!/.tools/PvzAssemblyPatcher/
+!/.tools/PvzAssemblyPatcher/Program.cs
+!/.tools/PvzAssemblyPatcher/PvzAssemblyPatcher.csproj
+!/.tools/PvzAssemblyPatcher/README.md
 /Godot-4.7-mono/
 /PVZ-Hybrid-0.25-native/
 
