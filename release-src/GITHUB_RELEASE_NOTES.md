@@ -18,20 +18,27 @@
 
 ### 安装说明
 
-1. 下载并完整解压 `v0.25-macOS-Release.zip`。
-2. 将应用拖入“应用程序”文件夹。
-3. 首次启动时右键应用并选择“打开”。
+1. 下载并打开 `植物大战僵尸杂交版v0.25-macOS-Installer.dmg`。
+2. 双击 `安装植物大战僵尸杂交版v0.25.pkg`。
+3. 按照 macOS“安装器”完成安装。
+4. 从“启动台”或“应用程序”文件夹启动游戏。
 
-当前发行包采用 ad-hoc 签名，未经过 Apple Developer ID 公证。Apple 芯片 Mac 如未安装 Rosetta 2，可执行：
+安装器会检查 macOS 版本、处理器架构、磁盘空间、游戏运行状态和 Rosetta
+2。Apple 芯片 Mac 如缺少 Rosetta 2，安装器会通过 Apple“软件更新”服务
+完成安装；整个过程不依赖 Windows 或 CrossOver。
 
-```sh
-softwareupdate --install-rosetta
-```
+升级安装不会删除用户目录中的游戏存档。
+
+### macOS 安全提示
+
+当前构建尚未使用 Developer ID 签名和 Apple 公证。首次打开安装包时，
+macOS 可能阻止运行；请在尝试打开后前往“系统设置 → 隐私与安全性”，
+点击“仍要打开”。公司或学校管理的 Mac 可能不允许安装未公证的软件。
 
 ### 文件校验
 
-```text
-SHA-256: 26c14a194cc7925301ddf1b91745cded3ee5c601821fb97e7fd6ab3230fe47e9
+```sh
+shasum -a 256 -c 植物大战僵尸杂交版v0.25-macOS-Installer.dmg.sha256
 ```
 
 本项目与游戏原作者、发行方及相关权利人无隶属或授权关系。游戏内容、名称、商标及相关素材的权利归其各自权利人所有。

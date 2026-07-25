@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<installer-gui-script minSpecVersion="2">
+  <title>植物大战僵尸杂交版 v0.25</title>
+  <organization>com.pvzhe.hybrid025.macos</organization>
+  <options customize="never" require-scripts="false" hostArchitectures="arm64,x86_64"/>
+  <domains enable_anywhere="false" enable_currentUserHome="false" enable_localSystem="true"/>
+  <allowed-os-versions>
+    <os-version min="13.0"/>
+  </allowed-os-versions>
+
+  <welcome file="welcome.html"/>
+  <license file="license.html"/>
+  <readme file="readme.html"/>
+  <conclusion file="conclusion.html"/>
+
+  <choices-outline>
+    <line choice="default">
+      <line choice="game"/>
+    </line>
+  </choices-outline>
+  <choice id="default"/>
+  <choice id="game" visible="false" title="植物大战僵尸杂交版 v0.25">
+    <pkg-ref id="com.pvzhe.hybrid025.macos.installer.component"/>
+  </choice>
+
+  <pkg-ref
+    id="com.pvzhe.hybrid025.macos.installer.component"
+    version="0.25.0"
+    onConclusion="none">PVZHybrid025Component.pkg</pkg-ref>
+</installer-gui-script>

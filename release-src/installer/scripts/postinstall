@@ -1,0 +1,38 @@
+#!/bin/sh
+
+set -u
+
+PATH=/usr/bin:/bin:/usr/sbin:/sbin
+export PATH
+
+LOG_PREFIX="[PVZ Hybrid v0.25 Installer]"
+TARGET_VOLUME="${3:-/}"
+APP_PATH="${TARGET_VOLUME%/}/Applications/植物大战僵尸杂交版v0.25.app"
+
+log()
+{
+    echo "${LOG_PREFIX} $*"
+}
+
+fail()
+{
+    log "ERROR: $*"
+    exit 1
+}
+
+[ -d "${APP_PATH}" ] || fail "安装后的应用不存在。 / The installed app is missing."
+[ -x "${APP_PATH}/Contents/MacOS/PVZHybridLauncher" ] || fail "启动器缺失或不可执行。 / The launcher is missing or not executable."
+[ -x "${APP_PATH}/Contents/MacOS/PVZHybridGame" ] || fail "游戏运行时缺失或不可执行。 / The game runtime is missing or not executable."
+[ -f "${APP_PATH}/Contents/Resources/PVZHybridGame.pck" ] || fail "游戏资源包缺失。 / The game resource pack is missing."
+[ -f "${APP_PATH}/Contents/Resources/data_PlantsVsZombies_macos_x86_64/PlantsVsZombies.dll" ] || fail ".NET 游戏程序集缺失。 / The .NET game assembly is missing."
+
+/usr/bin/codesign --verify --deep --strict "${APP_PATH}" >/dev/null 2>&1 ||
+    fail "应用签名验证失败。 / App signature verification failed."
+
+LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
+if [ -x "${LSREGISTER}" ]; then
+    "${LSREGISTER}" -f "${APP_PATH}" >/dev/null 2>&1 || true
+fi
+
+log "应用已安装到 /Applications。 / The app was installed in /Applications."
+exit 0

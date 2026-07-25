@@ -1,0 +1,72 @@
+#!/bin/sh
+
+set -u
+
+PATH=/usr/bin:/bin:/usr/sbin:/sbin
+export PATH
+
+LOG_PREFIX="[PVZ Hybrid v0.25 Installer]"
+TARGET_VOLUME="${3:-/}"
+MIN_FREE_KB=1572864
+
+log()
+{
+    echo "${LOG_PREFIX} $*"
+}
+
+fail()
+{
+    log "ERROR: $*"
+    exit 1
+}
+
+macos_version=$(/usr/bin/sw_vers -productVersion 2>/dev/null || echo "0")
+macos_major=$(printf '%s\n' "${macos_version}" | /usr/bin/awk -F. '{print $1}')
+case "${macos_major}" in
+    ''|*[!0-9]*) fail "无法识别 macOS 版本。 / Unable to determine the macOS version." ;;
+esac
+
+if [ "${macos_major}" -lt 13 ]; then
+    fail "需要 macOS 13 或更高版本。 / macOS 13 or later is required."
+fi
+
+available_kb=$(/bin/df -Pk "${TARGET_VOLUME}" 2>/dev/null | /usr/bin/awk 'NR == 2 {print $4}')
+case "${available_kb}" in
+    ''|*[!0-9]*) log "无法读取目标卷可用空间，继续安装。 / Could not read free space; continuing." ;;
+    *)
+        if [ "${available_kb}" -lt "${MIN_FREE_KB}" ]; then
+            fail "目标磁盘至少需要 1.5 GB 可用空间。 / At least 1.5 GB of free space is required."
+        fi
+        ;;
+esac
+
+if /usr/bin/pgrep -f "/植物大战僵尸杂交版v0\\.25\\.app/Contents/MacOS/PVZHybrid(Game|Launcher)" >/dev/null 2>&1; then
+    fail "请先退出游戏，再重新运行安装器。 / Quit the game before installing."
+fi
+
+machine=$(/usr/bin/uname -m)
+case "${machine}" in
+    x86_64)
+        log "Intel Mac：无需 Rosetta 2。 / Intel Mac: Rosetta 2 is not required."
+        ;;
+    arm64)
+        if /usr/bin/arch -x86_64 /usr/bin/true >/dev/null 2>&1; then
+            log "Rosetta 2 已安装。 / Rosetta 2 is installed."
+        else
+            log "正在通过 Apple 软件更新服务安装 Rosetta 2。 / Installing Rosetta 2 through Apple Software Update."
+            if ! /usr/sbin/softwareupdate --install-rosetta --agree-to-license; then
+                fail "Rosetta 2 安装失败。请检查网络连接后重试。 / Rosetta 2 installation failed. Check the internet connection and try again."
+            fi
+            if ! /usr/bin/arch -x86_64 /usr/bin/true >/dev/null 2>&1; then
+                fail "Rosetta 2 安装后验证失败。 / Rosetta 2 verification failed after installation."
+            fi
+            log "Rosetta 2 安装并验证成功。 / Rosetta 2 was installed and verified."
+        fi
+        ;;
+    *)
+        fail "不支持的 Mac 架构：${machine}。 / Unsupported Mac architecture: ${machine}."
+        ;;
+esac
+
+log "安装前检查已通过。 / Pre-installation checks passed."
+exit 0

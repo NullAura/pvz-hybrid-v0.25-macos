@@ -8,13 +8,13 @@
 
 请从 [Releases](https://github.com/NullAura/pvz-hybrid-v0.25-macos/releases/latest) 下载以下文件：
 
-- `v0.25-macOS-Release.zip`
-- `v0.25-macOS-Release.zip.sha256`
+- `植物大战僵尸杂交版v0.25-macOS-Installer.dmg`
+- `植物大战僵尸杂交版v0.25-macOS-Installer.dmg.sha256`
 
 可在终端中校验文件完整性：
 
 ```sh
-shasum -a 256 -c v0.25-macOS-Release.zip.sha256
+shasum -a 256 -c 植物大战僵尸杂交版v0.25-macOS-Installer.dmg.sha256
 ```
 
 ## 兼容性
@@ -26,20 +26,21 @@ shasum -a 256 -c v0.25-macOS-Release.zip.sha256
 | Apple 芯片 Mac | 通过 Rosetta 2 运行 |
 | 游戏架构 | x86_64 |
 
-Apple 芯片 Mac 如尚未安装 Rosetta 2，可执行：
-
-```sh
-softwareupdate --install-rosetta
-```
+Rosetta 2 是 Apple 提供的 macOS 官方兼容组件，不是 Windows 或
+CrossOver。安装器会自动检测；如尚未安装，将通过 Apple“软件更新”服务安装。
 
 ## 安装
 
-1. 下载并完整解压 Release ZIP。
-2. 将 `植物大战僵尸杂交版v0.25.app` 拖入“应用程序”文件夹。
-3. 首次启动时右键应用并选择“打开”。
-4. 如果 macOS 继续阻止启动，请在“系统设置 → 隐私与安全性”中选择“仍要打开”。
+1. 打开下载的 DMG。
+2. 双击 `安装植物大战僵尸杂交版v0.25.pkg`。
+3. 按照 macOS“安装器”中的步骤完成安装。
+4. 从“启动台”或“应用程序”文件夹启动游戏。
 
-当前发行包采用 ad-hoc 签名，未经过 Apple Developer ID 公证，因此首次启动需要由用户手动确认。
+安装器会检查系统版本、处理器架构、磁盘空间、游戏是否正在运行以及
+Rosetta 2 状态。升级安装会替换旧 App，但不会删除用户目录中的存档。
+
+用于公开分发的 DMG、PKG 和 App 应使用 Developer ID 签名并通过 Apple
+公证。未签名的测试构建需要在 Finder 中右键安装包并选择“打开”。
 
 ## 兼容性调整
 
@@ -81,8 +82,12 @@ softwareupdate --install-rosetta
 
 - Apple 芯片设备需要 Rosetta 2
 - 当前版本不提供 arm64 原生游戏运行时
-- 发行包未经过 Apple 公证
 - 联机、更新检查等上游功能可能受网络环境或服务状态影响
+
+## 构建安装器
+
+安装器构建脚本、双语界面资源、Rosetta 检测逻辑与 Developer ID/公证参数
+位于 [`release-src/installer`](release-src/installer/README.md)。
 
 ## 项目范围
 
