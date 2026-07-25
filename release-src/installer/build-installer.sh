@@ -8,7 +8,7 @@ APP_NAME="植物大战僵尸杂交版v0.25.app"
 PRODUCT_VERSION="0.25.0"
 COMPONENT_ID="com.pvzhe.hybrid025.macos.installer.component"
 PKG_NAME="安装植物大战僵尸杂交版v0.25.pkg"
-DMG_NAME="植物大战僵尸杂交版v0.25-macOS-Installer.dmg"
+DMG_NAME="v0.25-macOS-Installer.dmg"
 
 APP_SOURCE=""
 OUTPUT_DIR="${REPO_ROOT}/release/installer"

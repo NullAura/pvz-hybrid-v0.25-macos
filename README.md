@@ -8,13 +8,13 @@
 
 请从 [Releases](https://github.com/NullAura/pvz-hybrid-v0.25-macos/releases/latest) 下载以下文件：
 
-- `植物大战僵尸杂交版v0.25-macOS-Installer.dmg`
-- `植物大战僵尸杂交版v0.25-macOS-Installer.dmg.sha256`
+- `v0.25-macOS-Installer.dmg`
+- `v0.25-macOS-Installer.dmg.sha256`
 
 可在终端中校验文件完整性：
 
 ```sh
-shasum -a 256 -c 植物大战僵尸杂交版v0.25-macOS-Installer.dmg.sha256
+shasum -a 256 -c v0.25-macOS-Installer.dmg.sha256
 ```
 
 ## 兼容性
