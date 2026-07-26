@@ -6,11 +6,14 @@
 
 ## 下载
 
-仓库提供中文兼容版和完整英化版，两者使用独立的应用名称和存档目录，可以并存。
+英文版现由独立仓库维护；本仓库继续保留中文版 macOS 兼容发行。两个版本使用
+独立的应用名称和存档目录，可以并存。
 
 ### English Edition
 
-从 [最新 Release](https://github.com/NullAura/pvz-hybrid-v0.25-macos/releases/latest)
+从
+[英文版独立仓库](https://github.com/NullAura/pvz-hybrid-v0.25-english-macos)
+的 [最新 Release](https://github.com/NullAura/pvz-hybrid-v0.25-english-macos/releases/latest)
 下载：
 
 - `PVZ-Hybrid-v0.25-English-macOS-Installer.dmg`
