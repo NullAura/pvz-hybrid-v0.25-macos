@@ -1,0 +1,19 @@
+; Minimal Godot project used only to import reviewed localization textures.
+; Keeping C# and game autoloads out of this project makes texture imports
+; reproducible without starting or compiling the game.
+
+config_version=5
+
+[application]
+
+config/name="PVZ English Texture Import"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+
+[editor]
+
+import/atlas_max_width=5000
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

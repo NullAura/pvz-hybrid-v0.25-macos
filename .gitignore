@@ -7,6 +7,10 @@
 !/.tools/PvzAssemblyPatcher/Program.cs
 !/.tools/PvzAssemblyPatcher/PvzAssemblyPatcher.csproj
 !/.tools/PvzAssemblyPatcher/README.md
+!/.tools/PvzEnglishLocalization/
+!/.tools/PvzEnglishLocalization/**
+/.tools/PvzEnglishLocalization/**/__pycache__/
+/.tools/PvzEnglishLocalization/**/*.py[co]
 /Godot-4.7-mono/
 /PVZ-Hybrid-0.25-native/
 

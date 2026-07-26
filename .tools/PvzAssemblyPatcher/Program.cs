@@ -1,5 +1,288 @@
 using Mono.Cecil;
 using Mono.Cecil.Cil;
+using System.Text.Json;
+
+static IEnumerable<TypeDefinition> EnumerateTypes(IEnumerable<TypeDefinition> types)
+{
+    foreach (var type in types)
+    {
+        yield return type;
+        foreach (var nested in EnumerateTypes(type.NestedTypes))
+        {
+            yield return nested;
+        }
+    }
+}
+
+static bool ContainsCjk(string value)
+{
+    return value.Any(character =>
+        character is >= '\u3000' and <= '\u303f' or
+        >= '\u3400' and <= '\u9fff' or
+        >= '\uf900' and <= '\ufaff' or
+        >= '\uff01' and <= '\uff60');
+}
+
+static string InstructionOperandSignature(
+    Instruction instruction,
+    MethodDefinition method)
+{
+    if (instruction.OpCode == OpCodes.Ldstr)
+    {
+        return "<localized-string>";
+    }
+
+    return instruction.Operand switch
+    {
+        null => "",
+        Instruction target =>
+            $"instruction:{method.Body.Instructions.IndexOf(target)}",
+        Instruction[] targets =>
+            "instructions:" + string.Join(
+                ",",
+                targets.Select(target =>
+                    method.Body.Instructions.IndexOf(target))),
+        VariableDefinition variable =>
+            $"variable:{variable.Index}:{variable.VariableType.FullName}",
+        ParameterDefinition parameter =>
+            $"parameter:{parameter.Index}:{parameter.ParameterType.FullName}",
+        MethodReference reference => $"method:{reference.FullName}",
+        FieldReference reference => $"field:{reference.FullName}",
+        TypeReference reference => $"type:{reference.FullName}",
+        CallSite callSite => $"callsite:{callSite.FullName}",
+        string value => $"string:{value}",
+        _ => $"{instruction.Operand.GetType().FullName}:{instruction.Operand}",
+    };
+}
+
+static int InstructionIndex(MethodDefinition method, Instruction? instruction)
+{
+    return instruction is null ? -1 : method.Body.Instructions.IndexOf(instruction);
+}
+
+static string ExceptionHandlerSignature(
+    ExceptionHandler handler,
+    MethodDefinition method)
+{
+    return string.Join(
+        ":",
+        handler.HandlerType,
+        handler.CatchType?.FullName ?? "",
+        InstructionIndex(method, handler.TryStart),
+        InstructionIndex(method, handler.TryEnd),
+        InstructionIndex(method, handler.HandlerStart),
+        InstructionIndex(method, handler.HandlerEnd),
+        InstructionIndex(method, handler.FilterStart));
+}
+
+static IReadOnlyList<string> CompareAssemblyLogic(
+    AssemblyDefinition baseline,
+    AssemblyDefinition localized,
+    out int localizedStringInstructionCount,
+    out int changedStringInstructionCount)
+{
+    var differences = new List<string>();
+    localizedStringInstructionCount = 0;
+    changedStringInstructionCount = 0;
+
+    var baselineTypes = EnumerateTypes(baseline.MainModule.Types)
+        .ToDictionary(type => type.FullName);
+    var localizedTypes = EnumerateTypes(localized.MainModule.Types)
+        .ToDictionary(type => type.FullName);
+    foreach (var missing in baselineTypes.Keys.Except(localizedTypes.Keys).Order())
+    {
+        differences.Add($"Missing type: {missing}");
+    }
+    foreach (var added in localizedTypes.Keys.Except(baselineTypes.Keys).Order())
+    {
+        differences.Add($"Added type: {added}");
+    }
+
+    foreach (var typeName in baselineTypes.Keys.Intersect(localizedTypes.Keys).Order())
+    {
+        var baselineType = baselineTypes[typeName];
+        var localizedType = localizedTypes[typeName];
+        if (baselineType.Attributes != localizedType.Attributes)
+        {
+            differences.Add($"Type attributes changed: {typeName}");
+        }
+
+        var baselineFields = baselineType.Fields
+            .ToDictionary(field => field.FullName);
+        var localizedFields = localizedType.Fields
+            .ToDictionary(field => field.FullName);
+        if (!baselineFields.Keys.Order().SequenceEqual(localizedFields.Keys.Order()))
+        {
+            differences.Add($"Field set changed: {typeName}");
+        }
+        else
+        {
+            foreach (var fieldName in baselineFields.Keys)
+            {
+                var left = baselineFields[fieldName];
+                var right = localizedFields[fieldName];
+                if (left.Attributes != right.Attributes ||
+                    left.HasConstant != right.HasConstant ||
+                    !Equals(left.Constant, right.Constant))
+                {
+                    differences.Add($"Field metadata changed: {fieldName}");
+                }
+            }
+        }
+
+        var baselineProperties = baselineType.Properties
+            .Select(property => property.FullName)
+            .Order()
+            .ToArray();
+        var localizedProperties = localizedType.Properties
+            .Select(property => property.FullName)
+            .Order()
+            .ToArray();
+        if (!baselineProperties.SequenceEqual(localizedProperties))
+        {
+            differences.Add($"Property set changed: {typeName}");
+        }
+
+        var baselineEvents = baselineType.Events
+            .Select(eventDefinition => eventDefinition.FullName)
+            .Order()
+            .ToArray();
+        var localizedEvents = localizedType.Events
+            .Select(eventDefinition => eventDefinition.FullName)
+            .Order()
+            .ToArray();
+        if (!baselineEvents.SequenceEqual(localizedEvents))
+        {
+            differences.Add($"Event set changed: {typeName}");
+        }
+
+        var baselineMethods = baselineType.Methods
+            .ToDictionary(method => method.FullName);
+        var localizedMethods = localizedType.Methods
+            .ToDictionary(method => method.FullName);
+        foreach (var missing in baselineMethods.Keys.Except(localizedMethods.Keys).Order())
+        {
+            differences.Add($"Missing method: {missing}");
+        }
+        foreach (var added in localizedMethods.Keys.Except(baselineMethods.Keys).Order())
+        {
+            differences.Add($"Added method: {added}");
+        }
+
+        foreach (var methodName in baselineMethods.Keys.Intersect(localizedMethods.Keys).Order())
+        {
+            var left = baselineMethods[methodName];
+            var right = localizedMethods[methodName];
+            if (left.Attributes != right.Attributes ||
+                left.ImplAttributes != right.ImplAttributes ||
+                left.CallingConvention != right.CallingConvention ||
+                left.GenericParameters.Count != right.GenericParameters.Count ||
+                left.HasBody != right.HasBody)
+            {
+                differences.Add($"Method metadata changed: {methodName}");
+                continue;
+            }
+            if (!left.HasBody)
+            {
+                continue;
+            }
+
+            var leftBody = left.Body;
+            var rightBody = right.Body;
+            if (leftBody.InitLocals != rightBody.InitLocals ||
+                leftBody.Variables.Count != rightBody.Variables.Count)
+            {
+                differences.Add($"Method local layout changed: {methodName}");
+                continue;
+            }
+            for (var index = 0; index < leftBody.Variables.Count; index++)
+            {
+                var leftVariable = leftBody.Variables[index];
+                var rightVariable = rightBody.Variables[index];
+                if (leftVariable.VariableType.FullName != rightVariable.VariableType.FullName ||
+                    leftVariable.IsPinned != rightVariable.IsPinned)
+                {
+                    differences.Add(
+                        $"Method local changed: {methodName} local {index}");
+                }
+            }
+
+            if (leftBody.Instructions.Count != rightBody.Instructions.Count)
+            {
+                differences.Add($"Instruction count changed: {methodName}");
+                continue;
+            }
+            for (var index = 0; index < leftBody.Instructions.Count; index++)
+            {
+                var leftInstruction = leftBody.Instructions[index];
+                var rightInstruction = rightBody.Instructions[index];
+                if (leftInstruction.OpCode.Code != rightInstruction.OpCode.Code)
+                {
+                    differences.Add(
+                        $"Opcode changed: {methodName} instruction {index} " +
+                        $"{leftInstruction.OpCode} -> {rightInstruction.OpCode}");
+                    continue;
+                }
+                if (rightInstruction.OpCode == OpCodes.Ldstr)
+                {
+                    localizedStringInstructionCount++;
+                    if (!Equals(leftInstruction.Operand, rightInstruction.Operand))
+                    {
+                        changedStringInstructionCount++;
+                    }
+                    continue;
+                }
+                var leftOperand = InstructionOperandSignature(leftInstruction, left);
+                var rightOperand = InstructionOperandSignature(rightInstruction, right);
+                if (leftOperand != rightOperand)
+                {
+                    differences.Add(
+                        $"Operand changed: {methodName} instruction {index} " +
+                        $"{leftOperand} -> {rightOperand}");
+                }
+            }
+
+            var leftHandlers = leftBody.ExceptionHandlers
+                .Select(handler => ExceptionHandlerSignature(handler, left))
+                .ToArray();
+            var rightHandlers = rightBody.ExceptionHandlers
+                .Select(handler => ExceptionHandlerSignature(handler, right))
+                .ToArray();
+            if (!leftHandlers.SequenceEqual(rightHandlers))
+            {
+                differences.Add($"Exception handlers changed: {methodName}");
+            }
+        }
+    }
+
+    var baselineReferences = baseline.MainModule.AssemblyReferences
+        .Select(reference => reference.FullName)
+        .Order()
+        .ToArray();
+    var localizedReferences = localized.MainModule.AssemblyReferences
+        .Select(reference => reference.FullName)
+        .Order()
+        .ToArray();
+    if (!baselineReferences.SequenceEqual(localizedReferences))
+    {
+        differences.Add("Assembly references changed.");
+    }
+
+    var baselineResources = baseline.MainModule.Resources
+        .Select(resource => $"{resource.ResourceType}:{resource.Name}")
+        .Order()
+        .ToArray();
+    var localizedResources = localized.MainModule.Resources
+        .Select(resource => $"{resource.ResourceType}:{resource.Name}")
+        .Order()
+        .ToArray();
+    if (!baselineResources.SequenceEqual(localizedResources))
+    {
+        differences.Add("Embedded resource set changed.");
+    }
+
+    return differences;
+}
 
 static void WriteAssembly(AssemblyDefinition assembly, string assemblyPath)
 {
@@ -216,13 +499,23 @@ static bool HasCall(MethodDefinition method, string methodName)
         reference.Name == methodName);
 }
 
-if (args.Length != 2 ||
-    (args[0] != "inspect" &&
-     args[0] != "patch" &&
-     args[0] != "inspect-victory" &&
-     args[0] != "patch-victory"))
+var command = args.Length > 0 ? args[0] : "";
+var validArguments =
+    (args.Length == 2 &&
+     (command == "inspect" ||
+      command == "inspect-strings" ||
+      command == "patch" ||
+      command == "inspect-victory" ||
+      command == "patch-victory")) ||
+    (args.Length == 3 &&
+     (command == "patch-strings" ||
+      command == "compare-logic"));
+if (!validArguments)
 {
-    Console.Error.WriteLine("Usage: PvzAssemblyPatcher <inspect|patch|inspect-victory|patch-victory> <PlantsVsZombies.dll>");
+    Console.Error.WriteLine(
+        "Usage: PvzAssemblyPatcher <inspect|inspect-strings|patch|inspect-victory|patch-victory> <PlantsVsZombies.dll>\n" +
+        "       PvzAssemblyPatcher patch-strings <PlantsVsZombies.dll> <translations.json>\n" +
+        "       PvzAssemblyPatcher compare-logic <baseline.dll> <localized.dll>");
     return 2;
 }
 
@@ -237,6 +530,123 @@ var readerParameters = new ReaderParameters
 };
 
 using var assembly = AssemblyDefinition.ReadAssembly(assemblyPath, readerParameters);
+
+if (args[0] == "compare-logic")
+{
+    var localizedPath = Path.GetFullPath(args[2]);
+    var localizedResolver = new DefaultAssemblyResolver();
+    localizedResolver.AddSearchDirectory(Path.GetDirectoryName(localizedPath)!);
+    var localizedReaderParameters = new ReaderParameters
+    {
+        InMemory = true,
+        ReadSymbols = false,
+        AssemblyResolver = localizedResolver,
+    };
+    using var localizedAssembly = AssemblyDefinition.ReadAssembly(
+        localizedPath,
+        localizedReaderParameters);
+    var differences = CompareAssemblyLogic(
+        assembly,
+        localizedAssembly,
+        out var localizedStringInstructionCount,
+        out var changedStringInstructionCount);
+    if (differences.Count > 0)
+    {
+        Console.Error.WriteLine(
+            $"Assembly logic differs in {differences.Count} place(s):");
+        foreach (var difference in differences.Take(100))
+        {
+            Console.Error.WriteLine($"- {difference}");
+        }
+        if (differences.Count > 100)
+        {
+            Console.Error.WriteLine(
+                $"- ... {differences.Count - 100} additional difference(s)");
+        }
+        return 1;
+    }
+
+    Console.WriteLine(
+        "Assembly logic is equivalent: " +
+        $"types={EnumerateTypes(assembly.MainModule.Types).Count()} " +
+        $"methods={EnumerateTypes(assembly.MainModule.Types).Sum(type => type.Methods.Count)} " +
+        $"string_instructions={localizedStringInstructionCount} " +
+        $"localized_strings={changedStringInstructionCount}");
+    return 0;
+}
+
+if (args[0] == "patch-strings")
+{
+    var parsedTranslations = JsonSerializer.Deserialize<Dictionary<string, string>>(
+        File.ReadAllText(Path.GetFullPath(args[2])))
+        ?? throw new InvalidOperationException("Could not parse the runtime translation map.");
+    var translations = parsedTranslations
+        .Where(pair => ContainsCjk(pair.Key))
+        .ToDictionary(pair => pair.Key, pair => pair.Value);
+    if (translations.Any(pair => ContainsCjk(pair.Value)))
+    {
+        throw new InvalidOperationException(
+            "Runtime string mappings with CJK source keys must use CJK-free values.");
+    }
+
+    var replacementCount = 0;
+    var usedStrings = new HashSet<string>();
+    foreach (var type in EnumerateTypes(assembly.MainModule.Types))
+    {
+        foreach (var method in type.Methods.Where(method => method.HasBody))
+        {
+            foreach (var instruction in method.Body.Instructions.Where(instruction =>
+                         instruction.OpCode == OpCodes.Ldstr &&
+                         instruction.Operand is string))
+            {
+                var source = (string)instruction.Operand;
+                if (!translations.TryGetValue(source, out var translated) ||
+                    translated == source)
+                {
+                    continue;
+                }
+                instruction.Operand = translated;
+                replacementCount++;
+                usedStrings.Add(source);
+            }
+        }
+    }
+
+    if (replacementCount == 0)
+    {
+        Console.WriteLine("No matching assembly strings required replacement.");
+        return 0;
+    }
+    WriteAssembly(assembly, assemblyPath);
+    Console.WriteLine(
+        $"Patched assembly strings: instructions={replacementCount} " +
+        $"source_strings={usedStrings.Count} path={assemblyPath}");
+    return 0;
+}
+
+if (args[0] == "inspect-strings")
+{
+    var strings = EnumerateTypes(assembly.MainModule.Types)
+        .SelectMany(type => type.Methods
+            .Where(method => method.HasBody)
+            .SelectMany(method => method.Body.Instructions
+                .Where(instruction =>
+                    instruction.OpCode == OpCodes.Ldstr &&
+                    instruction.Operand is string value &&
+                    ContainsCjk(value))
+                .Select(instruction => new
+                {
+                    type = type.FullName,
+                    method = method.FullName,
+                    value = (string)instruction.Operand,
+                })))
+        .ToArray();
+    Console.WriteLine(JsonSerializer.Serialize(
+        strings,
+        new JsonSerializerOptions { WriteIndented = true }));
+    Console.Error.WriteLine($"CJK string instructions: {strings.Length}");
+    return 0;
+}
 
 if (args[0] == "inspect-victory")
 {

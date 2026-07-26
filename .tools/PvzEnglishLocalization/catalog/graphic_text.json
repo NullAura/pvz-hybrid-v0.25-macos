@@ -1,0 +1,319 @@
+{
+  "AwardSettlement/Paper/ExperimentalLogNote01.png": [
+    "EXPERIMENT LOG 021",
+    "The zombie intelligence trials based on the eleventh-generation gene-enhancement agent have achieved initial success.",
+    "The subjects' intelligence has improved markedly, and they have begun learning to use a wider range of tools and equipment.",
+    "This is a promising start. I can already see a bright future ahead.",
+    "DR. EDGAR"
+  ],
+  "AwardSettlement/Paper/ExperimentalLogNote02.png": [
+    "EXPERIMENT LOG 045",
+    "Construction is underway on the first aerosol dispersal units. Once complete, they will release the twelfth-generation gene-enhancement agent at several zombie gathering sites.",
+    "The agent is expected to trigger a large-scale evolution among the zombies.",
+    "Just wait. One day, I will make that fellow hand over his own brain.",
+    "DR. EDGAR"
+  ],
+  "AwardSettlement/Paper/ExperimentalLogNote03.png": [
+    "EXPERIMENT LOG 053",
+    "The XII gene-enhancement gas has greatly improved the zombies' intelligence and social behavior. They have begun devising new ways to assault the garden on their own.",
+    "Composite equipment for these new zombies has entered production planning.",
+    "The look on that fellow's face will be priceless. I can hardly wait to see what becomes of that ugly mug. Ha ha!",
+    "DR. EDGAR"
+  ],
+  "AwardSettlement/Paper/ExperimentalLogNote04.png": [
+    "EXPERIMENT LOG 062",
+    "Under the influence of an unknown factor, the properties of the gene-enhancement gas have begun to deviate slightly from the original design.",
+    "No abnormal effects on zombies have yet been observed. Further observation is required.",
+    "DR. EDGAR"
+  ],
+  "AwardSettlement/Paper/ExperimentalLogNote05.png": [
+    "EXPERIMENT LOG 068",
+    "At 05:47 today, the gas-dispersal facility began vibrating abnormally. The likely cause is irregular flow brought on by changes in the gas itself.",
+    "Repairs are underway as I record this. The situation is relatively stable for now."
+  ],
+  "AwardSettlement/Paper/ExperimentalLogNote06.png": [
+    "EXPERIMENT LOG 069",
+    "The explosion caused tremendous losses.",
+    "Fortunately, the completed zombie army has shown no unusual changes so far. I still command enough force to flatten that garden.",
+    "As for the escaped gas drifting through the atmosphere? Perhaps it will cause changes somewhere beyond my sight...",
+    "Whatever. I will not waste my time worrying about it.",
+    "DR. EDGAR"
+  ],
+  "AwardSettlement/Paper/ExperimentalLogNote06_2.png": [
+    "HOMEOWNER:",
+    "I foresaw this outcome long ago. As your old rival, I sincerely congratulate you on protecting your brains and home once again.",
+    "But alas... you are still as foolish as ever—too foolish to see the truth!",
+    "You do not think defeating me brings all this to an end, do you?",
+    "This experiment has never affected only you and me. Others are caught in it too.",
+    "I have abandoned this game. What comes next will be your real problem!",
+    "Let us see if you can still laugh then. Ha ha!",
+    "SINCERELY,",
+    "DR. EDGAR"
+  ],
+  "AwardSettlement/Paper/ExperimentalLogNote07.png": [
+    "EXPERIMENT LOG 082",
+    "The altered properties of the twelfth-generation gene-enhancement agent (XII) have now been tentatively identified.",
+    "The unstable XII has changed. It can affect plant genes and induce mutations. With specific artificial guidance, selected genes and traits can be combined.",
+    "That fellow's experiments appear to have been built upon this very principle.",
+    "That damned thief!",
+    "DR. EDGAR"
+  ],
+  "AwardSettlement/Paper/ExperimentalLogNote08.png": [
+    "EXPERIMENT LOG 094",
+    "Further observations have been made on the effects of altered XII on humans.",
+    "There is still no clear evidence that XII directly affects the human genome.",
+    "However, prolonged exposure appears to cause psychological and cognitive abnormalities, including excessive zeal and obsession toward particular subjects—research projects, for example.",
+    "I believe I may have a problem.",
+    "DR. EDGAR"
+  ],
+  "General/BattleWord/BattleApproching.png": [
+    "A HUGE WAVE OF ZOMBIES IS APPROACHING!"
+  ],
+  "General/BattleWord/BattleFinalWave.png": [
+    "FINAL WAVE"
+  ],
+  "General/BattleWord/BattleStartPlant.png": [
+    "PLANT!"
+  ],
+  "General/BattleWord/BattleStartReady.png": [
+    "READY..."
+  ],
+  "General/BattleWord/BattleStartSet.png": [
+    "SET..."
+  ],
+  "General/DialogBox/DialogMenu.png": [
+    "GAME MENU"
+  ],
+  "General/FlagMeter/FlagMeterLevelProgress.png": [
+    "LEVEL PROGRESS"
+  ],
+  "General/Special/LuckyBag.png": [
+    "LUCKY"
+  ],
+  "Help/HelpMobile.png": [
+    "GAME TIPS",
+    "On the card-selection screen, tap the save icon to save the current card group.",
+    "Tap a group to select all saved cards.",
+    "Double-tap its name to rename it."
+  ],
+  "Help/HelpPC.png": [
+    "GAME TIPS",
+    "On the card-selection screen, click the save icon to save the current card group.",
+    "Click a group to select all saved cards. Double-click its name to rename it.",
+    "KEYBOARD SHORTCUTS",
+    "1 → Shovel",
+    "2 → Pin Card Tray",
+    "3 → Show Plant HP",
+    "4 → Show Zombie HP",
+    "5 → Speed Up",
+    "ESC → Game Menu",
+    "SPACE → Pause",
+    "No response? TURN ON CAPS LOCK!"
+  ],
+  "LevelEditor/DiySelect_1.png": [
+    "MY LEVELS"
+  ],
+  "LevelEditor/DiySelect_1_highlight.png": [
+    "MY LEVELS"
+  ],
+  "LevelEditor/DiySelect_2.png": [
+    "ONLINE LEVELS"
+  ],
+  "LevelEditor/DiySelect_2_highlight.png": [
+    "ONLINE LEVELS"
+  ],
+  "LevelEditor/DiySelect_3.png": [
+    "CREATE NEW LEVEL"
+  ],
+  "LevelEditor/DiySelect_3_highlight.png": [
+    "CREATE NEW LEVEL"
+  ],
+  "LevelEditor/DiySelect_4.png": [
+    "LOAD LEVEL"
+  ],
+  "LevelEditor/DiySelect_4_highlight.png": [
+    "LOAD LEVEL"
+  ],
+  "LevelEditor/DiySelect_5.png": [
+    "ARENA"
+  ],
+  "LevelEditor/DiySelect_5_highlight.png": [
+    "ARENA"
+  ],
+  "LevelEditor/DiySelect_6.png": [
+    "WIN PREDICTION"
+  ],
+  "LevelEditor/DiySelect_6_highlight.png": [
+    "WIN PREDICTION"
+  ],
+  "LevelEditor/DiySelect_GameplayManual.png": [
+    "GAMEPLAY GUIDE"
+  ],
+  "LevelEditor/DiySelect_GameplayManual_highlight.png": [
+    "GAMEPLAY GUIDE"
+  ],
+  "LevelEditor/GameplayManual.png": [
+    "GAMEPLAY GUIDE",
+    "WELCOME TO THE ARENA!",
+    "A random custom level will be chosen for your next challenge.",
+    "The run ends when you reach 12 wins or 3 losses.",
+    "More wins mean better rewards!"
+  ],
+  "LevelEditor/SurvivalEndlessIcon.png": [
+    "ENDLESS"
+  ],
+  "LevelEditor/SurvivalIcon.png": [
+    "SURVIVAL"
+  ],
+  "OnlineLevelExchange/OnlineLevelExchangeButtonExchange.png": [
+    "EXCHANGE"
+  ],
+  "OnlineLevelExchange/OnlineLevelExchangeCrystalExchangeDisable.png": [
+    "REDEEMED"
+  ],
+  "OnlineLevelExchange/OnlineLevelExchangeEnter.png": [
+    "REDEEM REWARDS"
+  ],
+  "OnlineLevelExchange/OnlineLevelExchangeEnterHover.png": [
+    "REDEEM REWARDS"
+  ],
+  "OnlineLevelExchange/OnlineLevelExchangeRead.png": [
+    "INFO"
+  ],
+  "OnlineLevelExchange/OnlineLevelExchangeReadHover.png": [
+    "INFO"
+  ],
+  "OnlineLevelExchange/OnlineLevelExchangeReadPaper.png": [
+    "REWARD EXCHANGE GUIDE",
+    "Complete online levels to earn Activity Crystals!",
+    "Each regular online level awards 1 crystal.",
+    "Collect Activity Crystals and exchange them for rewards here!",
+    "Have fun!"
+  ],
+  "OnlineLevelExchange/OnlineLevelExchangeSelectCustom.png": [
+    "PLANTS",
+    "SKINS"
+  ],
+  "OnlineLevelExchange/OnlineLevelExchangeSelectPlant.png": [
+    "SKINS",
+    "PLANTS"
+  ],
+  "OnlineLevelExchange/OnlineLevelExchangeTitle.png": [
+    "CRYSTAL EXCHANGE"
+  ],
+  "Shop/Item/CoinCollect.png": [
+    "AUTO"
+  ],
+  "Shop/Item/SunCollect.png": [
+    "AUTO"
+  ],
+  "Shop/Newbottom_bag.png": [
+    "BACKPACK",
+    "VIEW BACKPACK"
+  ],
+  "Shop/Newbottom_bag_press.png": [
+    "BACKPACK",
+    "VIEW BACKPACK"
+  ],
+  "Shop/Newbottom_plants.png": [
+    "PLANT TRIALS"
+  ],
+  "Shop/Newbottom_plants_press.png": [
+    "PLANT TRIALS"
+  ],
+  "Shop/Newbottom_shop.png": [
+    "ENTER SHOP"
+  ],
+  "Shop/Newbottom_shop_press.png": [
+    "ENTER SHOP"
+  ],
+  "Shop/Newbottom_star.png": [
+    "STAR EXCHANGE"
+  ],
+  "Shop/Newbottom_star_press.png": [
+    "STAR EXCHANGE"
+  ],
+  "Shop/Shop_Sort0.png": [
+    "FILTER"
+  ],
+  "Shop/Shop_Sort0_select.png": [
+    "FILTER"
+  ],
+  "Shop/Shop_Sort1.png": [
+    "ALL"
+  ],
+  "Shop/Shop_Sort1_select.png": [
+    "ALL"
+  ],
+  "Shop/Shop_Sort2.png": [
+    "ITEMS"
+  ],
+  "Shop/Shop_Sort2_select.png": [
+    "ITEMS"
+  ],
+  "Shop/Shop_Sort3.png": [
+    "PLANTS"
+  ],
+  "Shop/Shop_Sort3_select.png": [
+    "PLANTS"
+  ],
+  "Shop/Shop_Sort4.png": [
+    "SKINS"
+  ],
+  "Shop/Shop_Sort4_select.png": [
+    "SKINS"
+  ],
+  "Shop/Shop_Sort5.png": [
+    "GARDEN",
+    "COMING SOON"
+  ],
+  "Shop/StoreNextButton.png": [
+    "NEXT"
+  ],
+  "Shop/StoreNextButtonHighlight.png": [
+    "NEXT"
+  ],
+  "Shop/StorePrevButton.png": [
+    "PREV"
+  ],
+  "Shop/StorePrevButtonHighlight.png": [
+    "PREV"
+  ],
+  "Shop/StoreSign.png": [
+    "QIANTING WEIWEI MI'S",
+    "FANCY TRINKETS"
+  ],
+  "StarExchange/StarExchangeTitle.png": [
+    "STAR EXCHANGE"
+  ],
+  "TowerDefense/Level/IZM/ChapterIZM.png": [
+    "I, ZOMBIE"
+  ],
+  "TryLevel/ShopLevel_Almanac.png": [
+    "ALMANAC"
+  ],
+  "TryLevel/ShopLevel_Almanac_press.png": [
+    "ALMANAC"
+  ],
+  "TryLevel/TryLevelTagPurple.png": [
+    "PURPLE"
+  ],
+  "TryLevel/TryLevelTagPurpleUnselected.png": [
+    "PURPLE"
+  ],
+  "TryLevel/TryLevelTagRainbow.png": [
+    "RAINBOW"
+  ],
+  "TryLevel/TryLevelTagRainbowUnselected.png": [
+    "RAINBOW"
+  ],
+  "TryLevel/TryLevelTagStar.png": [
+    "STAR"
+  ],
+  "TryLevel/TryLevelTagStarUnselected.png": [
+    "STAR"
+  ],
+  "TryLevel/TryLevelTagTitlePlantstry.png": [
+    "PLANT TRIALS"
+  ]
+}

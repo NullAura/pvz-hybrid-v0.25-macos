@@ -1,0 +1,72 @@
+#!/bin/sh
+
+set -u
+
+PATH=/usr/bin:/bin:/usr/sbin:/sbin
+export PATH
+
+LOG_PREFIX="[PVZ Hybrid v0.25 English Installer]"
+TARGET_VOLUME="${3:-/}"
+MIN_FREE_KB=1572864
+
+log()
+{
+    echo "${LOG_PREFIX} $*"
+}
+
+fail()
+{
+    log "ERROR: $*"
+    exit 1
+}
+
+macos_version=$(/usr/bin/sw_vers -productVersion 2>/dev/null || echo "0")
+macos_major=$(printf '%s\n' "${macos_version}" | /usr/bin/awk -F. '{print $1}')
+case "${macos_major}" in
+    ''|*[!0-9]*) fail "Unable to determine the macOS version." ;;
+esac
+
+if [ "${macos_major}" -lt 13 ]; then
+    fail "macOS 13 or later is required."
+fi
+
+available_kb=$(/bin/df -Pk "${TARGET_VOLUME}" 2>/dev/null | /usr/bin/awk 'NR == 2 {print $4}')
+case "${available_kb}" in
+    ''|*[!0-9]*) log "Could not read free disk space; continuing." ;;
+    *)
+        if [ "${available_kb}" -lt "${MIN_FREE_KB}" ]; then
+            fail "At least 1.5 GB of free disk space is required."
+        fi
+        ;;
+esac
+
+if /usr/bin/pgrep -f "/Plants vs\\. Zombies Hybrid v0\\.25 English\\.app/Contents/MacOS/PVZHybrid(Game|EnglishLauncher)" >/dev/null 2>&1; then
+    fail "Quit the game before installing."
+fi
+
+machine=$(/usr/bin/uname -m)
+case "${machine}" in
+    x86_64)
+        log "Intel Mac detected; Rosetta 2 is not required."
+        ;;
+    arm64)
+        if /usr/bin/arch -x86_64 /usr/bin/true >/dev/null 2>&1; then
+            log "Rosetta 2 is installed."
+        else
+            log "Installing Rosetta 2 through Apple Software Update."
+            if ! /usr/sbin/softwareupdate --install-rosetta --agree-to-license; then
+                fail "Rosetta 2 installation failed. Check the internet connection and try again."
+            fi
+            if ! /usr/bin/arch -x86_64 /usr/bin/true >/dev/null 2>&1; then
+                fail "Rosetta 2 verification failed after installation."
+            fi
+            log "Rosetta 2 was installed and verified."
+        fi
+        ;;
+    *)
+        fail "Unsupported Mac architecture: ${machine}."
+        ;;
+esac
+
+log "Pre-installation checks passed."
+exit 0

@@ -1,0 +1,231 @@
+{
+  "Prefab/GUI/Button/MainButton.tscn": {
+    "TextLabel": {
+      "anchors_preset": "15",
+      "anchor_right": "1.0",
+      "anchor_bottom": "1.0",
+      "offset_left": "10.0",
+      "offset_right": "-10.0",
+      "offset_bottom": "0.0",
+      "grow_horizontal": "2",
+      "grow_vertical": "2",
+      "theme_override_font_sizes/font_size": "17"
+    }
+  },
+  "Prefab/GUI/DialogBox/DailyChallenge/Award/DailyChallengeAward.tscn": {
+    "Layer/BackgroundTexture/TextLabel": {
+      "theme_override_font_sizes/font_size": "25"
+    }
+  },
+  "Prefab/GUI/DialogBox/DailyChallenge/Award/Item/DailyChallengeAwardItem.tscn": {
+    "AccessLabel": {
+      "theme_override_font_sizes/font_size": "15"
+    }
+  },
+  "Prefab/GUI/DialogBox/DailyChallenge/DailyChallenge.tscn": {
+    "Layer/BackgroundTexture/TextLabel": {
+      "theme_override_font_sizes/font_size": "31"
+    }
+  },
+  "Prefab/GUI/DialogBox/DailyChallenge/LevelChoose/DailyChallengeLevelChoose.tscn": {
+    "Layer/BackgroundTexture/TextLabel": {
+      "theme_override_font_sizes/font_size": "38"
+    },
+    "Layer/BackgroundTexture/PlayButton/TextLabel": {
+      "theme_override_font_sizes/font_size": "40"
+    }
+  },
+  "Prefab/GUI/DialogBox/DialogBoxGeneral/DialogBoxMultiplayerLobby/DialogBoxMultiplayerLobby.tscn": {
+    "Layer/Control/RoomIdInput": {
+      "theme_override_font_sizes/font_size": "14"
+    }
+  },
+  "Prefab/GUI/DialogBox/DialogBoxGeneral/DialogBoxUser/DialogBoxUser.tscn": {
+    "Layer/Control/ExportButton": {
+      "theme_override_font_sizes/font_size": "14"
+    },
+    "Layer/Control/LoadButton": {
+      "theme_override_font_sizes/font_size": "14"
+    }
+  },
+  "Prefab/GUI/DialogBox/MenuDialog/MenuDialogBase.tscn": {
+    "Layer/Control/DialogMenu/FullScreenLabel": {
+      "theme_override_font_sizes/font_size": "11"
+    },
+    "Layer/Control/DialogMenu/MobilePresetLabel": {
+      "theme_override_font_sizes/font_size": "14"
+    },
+    "Layer/Control/DialogMenu/MusicLabel": {
+      "theme_override_font_sizes/font_size": "14"
+    },
+    "Layer/Control/DialogMenu/SfxLabel": {
+      "theme_override_font_sizes/font_size": "14"
+    },
+    "Layer/Control/DialogMenu/HBoxContainer/AnimeFrameRateLabel": {
+      "theme_override_font_sizes/font_size": "14"
+    },
+    "Layer/Control/DialogMenu/BackButton/Label": {
+      "theme_override_font_sizes/font_size": "30"
+    }
+  },
+  "Prefab/TowerDefense/GUI/InGame/QuizManager/ChangePresentBoxButton/ChangePresentBoxButton.tscn": {
+    "TextLabel": {
+      "theme_override_font_sizes/font_size": "15"
+    }
+  },
+  "Prefab/GUI/DialogBox/OnlineLevel/OnlineLevelPreview.tscn": {
+    "Layer/BackgroundTexture/TextLabel": {
+      "theme_override_font_sizes/font_size": "35"
+    }
+  },
+  "Prefab/GUI/DialogBox/Shop/ShopItem/ShopItem.tscn": {
+    "DescribeLabel": {
+      "theme_override_font_sizes/font_size": "11"
+    },
+    "SoldOutLabel": {
+      "theme_override_font_sizes/font_size": "9"
+    }
+  },
+  "Prefab/GUI/InformationPanel/InformationPanel.tscn": {
+    "NameLabel": {
+      "theme_override_font_sizes/font_size": "17"
+    },
+    "NooneCustomLabel": {
+      "theme_override_font_sizes/font_size": "32"
+    }
+  },
+  "Prefab/GUI/LevelEditor/Battle/LevelEditorBattle.tscn": {
+    "TitleLabel": {
+      "theme_override_font_sizes/font_size": "64"
+    },
+    "MainNode/TrophyTexture/FinishLabel": {
+      "theme_override_font_sizes/font_size": "36"
+    },
+    "MainNode/TicketLabel": {
+      "theme_override_font_sizes/font_size": "22"
+    },
+    "MainNode/RewardButton/AwardLabel": {
+      "theme_override_font_sizes/font_size": "28"
+    },
+    "MainNode/CheckBoxNode/FailLabel": {
+      "theme_override_font_sizes/font_size": "18"
+    },
+    "MainNode/HistoryButton/FinishLabel": {
+      "theme_override_font_sizes/font_size": "20"
+    },
+    "AwardNode/ArenaReward005/AwardShowLabel5": {
+      "theme_override_font_sizes/font_size": "16"
+    },
+    "AwardNode/AwardShowLabel6": {
+      "theme_override_font_sizes/font_size": "20"
+    },
+    "HistoryNode/HistoryLabel": {
+      "theme_override_font_sizes/font_size": "42"
+    },
+    "HistoryNode/HistoryNooneLabel": {
+      "theme_override_font_sizes/font_size": "38"
+    }
+  },
+  "Prefab/GUI/LevelEditor/OnlineLevel/LevelEditorOnlineLevel.tscn": {
+    "PageLabel": {
+      "theme_override_font_sizes/font_size": "14"
+    }
+  },
+  "Prefab/GUI/LevelEditor/Quiz/LevelEditorQuiz.tscn": {
+    "TitleLabel": {
+      "theme_override_font_sizes/font_size": "54"
+    }
+  },
+  "Prefab/TowerDefense/GUI/InGame/QuizManager/BetPanel/BetPanel.tscn": {
+    "BetCoinLabel": {
+      "theme_override_font_sizes/font_size": "14"
+    }
+  },
+  "Prefab/TowerDefense/GUI/InGame/QuizManager/QuizControl.tscn": {
+    "StartGUINode/TitleLabel": {
+      "theme_override_font_sizes/font_size": "21"
+    }
+  },
+  "Registry/Battle/Feature/PacketBank/PacketBank/PacketCategory/PacketCategoryButton.tscn": {
+    "LabelNode/Label": {
+      "theme_override_font_sizes/font_size": "12"
+    }
+  },
+  "Scene/LevelChoose/LevelChoose.tscn": {
+    "GUI/LabelTexture/InformationLabel": {
+      "theme_override_font_sizes/font_size": "44"
+    },
+    "OptionGUI/LevelTexture/Difficult/NormalTexture/NormalButton/NormalLabel": {
+      "theme_override_font_sizes/font_size": "38"
+    },
+    "OptionGUI/LevelTexture/Layout/DifficultLabel": {
+      "theme_override_font_sizes/font_size": "26"
+    }
+  },
+  "Scene/TowerDefesne/TowerDefenseNew/TowerDefenseControlNew.tscn": {
+    "GUITop/CheckBox2X": {
+      "theme_override_font_sizes/font_size": "20"
+    }
+  },
+  "Scene/TowerDefesne/TowerDefenseOld/TowerDefenseControlOld.tscn": {
+    "GUILayerFront/CheckBox2X": {
+      "theme_override_font_sizes/font_size": "20"
+    }
+  },
+  "addons/ModEditor/Inspector/ResourceInspectorExtend/CurveTexture/XWInspectorPropertyEditorCurveTexture.tscn": {
+    "MarginContainer/VBoxContainer/HBoxContainer/CurveTextureEditor/SettingsGrid/TextureModeLabel": {
+      "theme_override_font_sizes/font_size": "12"
+    }
+  },
+  "addons/ModEditor/ResourceEditors/GUI/Panels/XWCharacterCombatArrayEditor.tscn": {
+    "Controls/MoveUpButton": {
+      "theme_override_font_sizes/font_size": "14"
+    }
+  },
+  "addons/ModEditor/ResourceEditors/GUI/Panels/XWFallingObjectVisualEditorLayout.tscn": {
+    "WeightPanel/WeightLayout/Controls/RemoveWeightButton": {
+      "theme_override_font_sizes/font_size": "12"
+    },
+    "WeightPanel/WeightLayout/Controls/WeightUpButton": {
+      "theme_override_font_sizes/font_size": "14"
+    }
+  },
+  "addons/ModEditor/ResourceEditors/GUI/Panels/XWLevelVisualEditorLayout.tscn": {
+    "FeatureProcessHost/FeatureProcessPanel/Split/FeaturePanel/FeatureToolbar/RemoveFeatureButton": {
+      "theme_override_font_sizes/font_size": "12"
+    }
+  },
+  "addons/ModEditor/ResourceEditors/GUI/Panels/XWPacketBankVisualEditorLayout.tscn": {
+    "Split/CategoryPanel/Controls/RemoveCategoryButton": {
+      "theme_override_font_sizes/font_size": "12"
+    },
+    "Split/PacketPanel/AddRow/PacketUpButton": {
+      "theme_override_font_sizes/font_size": "14"
+    }
+  },
+  "addons/ModEditor/ResourceEditors/GUI/Panels/XWShopVisualEditorLayout.tscn": {
+    "Split/PagePanel/Toolbar/PageRemoveButton": {
+      "theme_override_font_sizes/font_size": "12"
+    },
+    "Split/PagePanel/Toolbar/PageUpButton": {
+      "theme_override_font_sizes/font_size": "14"
+    },
+    "Split/ItemPanel/Toolbar/ItemRemoveButton": {
+      "theme_override_font_sizes/font_size": "12"
+    },
+    "Split/ItemPanel/Toolbar/ItemUpButton": {
+      "theme_override_font_sizes/font_size": "14"
+    },
+    "Split/StagePanel/Toolbar/StageRemoveButton": {
+      "theme_override_font_sizes/font_size": "12"
+    },
+    "Split/StagePanel/Toolbar/StageUpButton": {
+      "theme_override_font_sizes/font_size": "14"
+    }
+  },
+  "addons/ModEditor/ResourceEditors/GUI/Panels/XWShovelVisualEditorLayout.tscn": {
+    "EditorSplit/EventScroll/EventPanel/ShovelableToolbar/RemoveShovelableButton": {
+      "theme_override_font_sizes/font_size": "12"
+    }
+  }
+}

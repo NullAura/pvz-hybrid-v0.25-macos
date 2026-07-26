@@ -1,0 +1,44 @@
+#!/bin/sh
+
+set -u
+
+PATH=/usr/bin:/bin:/usr/sbin:/sbin
+export PATH
+
+LOG_PREFIX="[PVZ Hybrid v0.25 English Installer]"
+TARGET_VOLUME="${3:-/}"
+APP_PATH="${TARGET_VOLUME%/}/Applications/Plants vs. Zombies Hybrid v0.25 English.app"
+
+log()
+{
+    echo "${LOG_PREFIX} $*"
+}
+
+fail()
+{
+    log "ERROR: $*"
+    exit 1
+}
+
+[ -d "${APP_PATH}" ] || fail "The installed application is missing."
+[ -x "${APP_PATH}/Contents/MacOS/PVZHybridEnglishLauncher" ] ||
+    fail "The launcher is missing or is not executable."
+[ -x "${APP_PATH}/Contents/MacOS/PVZHybridGame" ] ||
+    fail "The game runtime is missing or is not executable."
+[ -f "${APP_PATH}/Contents/Resources/PVZHybridGame.pck" ] ||
+    fail "The game resource pack is missing."
+[ -x "${APP_PATH}/Contents/Resources/dotnet-x64/dotnet" ] ||
+    fail "The bundled .NET runtime is missing or is not executable."
+[ -f "${APP_PATH}/Contents/Resources/data_PlantsVsZombies_macos_x86_64/PlantsVsZombies.dll" ] ||
+    fail "The .NET game assembly is missing."
+
+/usr/bin/codesign --verify --deep --strict "${APP_PATH}" >/dev/null 2>&1 ||
+    fail "The application signature could not be verified."
+
+LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
+if [ -x "${LSREGISTER}" ]; then
+    "${LSREGISTER}" -f "${APP_PATH}" >/dev/null 2>&1 || true
+fi
+
+log "The English game was installed in Applications."
+exit 0

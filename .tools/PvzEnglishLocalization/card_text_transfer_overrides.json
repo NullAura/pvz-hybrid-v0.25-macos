@@ -1,0 +1,148 @@
+{
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B091.png": {
+    "exclude_boxes": [[387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B092.png": {
+    "exclude_boxes": [[387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B093.png": {
+    "exclude_boxes": [[387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B094.png": {
+    "exclude_boxes": [[387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B095.png": {
+    "exclude_boxes": [[387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B096.png": {
+    "exclude_boxes": [[387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B097.png": {
+    "exclude_boxes": [[387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B098.png": {
+    "exclude_boxes": [[387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B099.png": {
+    "exclude_boxes": [[387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B100.png": {
+    "exclude_boxes": [[387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B101.png": {
+    "exclude_boxes": [[387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B102.png": {
+    "exclude_boxes": [[387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B039.png": {
+    "exclude_boxes": [[380, 55, 32, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B049.png": {
+    "exclude_boxes": [[125, 75, 65, 55], [387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B050.png": {
+    "exclude_boxes": [[125, 75, 65, 55], [387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B051.png": {
+    "exclude_boxes": [[125, 75, 65, 55], [387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B052.png": {
+    "exclude_boxes": [[125, 75, 65, 55], [387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B053.png": {
+    "exclude_boxes": [[125, 75, 65, 55], [387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B054.png": {
+    "exclude_boxes": [[125, 75, 65, 55], [387, 55, 25, 115]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B073.png": {
+    "exclude_boxes": [[385, 55, 27, 65]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B074.png": {
+    "exclude_boxes": [[385, 55, 27, 65]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B075.png": {
+    "exclude_boxes": [[385, 55, 27, 65]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B076.png": {
+    "exclude_boxes": [[385, 55, 27, 65]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B077.png": {
+    "exclude_boxes": [[385, 55, 27, 65]]
+  },
+  "TowerDefense/Level/Challenge/Diamond/Challenge_LEVEL_B078.png": {
+    "exclude_boxes": [[385, 55, 27, 65]]
+  },
+  "TowerDefense/Level/Challenge/Gold/Challenge_LEVEL_A004.png": {
+    "include_boxes": [[243, 62, 72, 35]],
+    "exclude_boxes": [[140, 78, 50, 50]]
+  },
+  "TowerDefense/Level/Challenge/Gold/Challenge_LEVEL_A005.png": {
+    "exclude_boxes": [[140, 78, 50, 50]]
+  },
+  "TowerDefense/Level/Challenge/Gold/Challenge_LEVEL_A006.png": {
+    "exclude_boxes": [[140, 78, 50, 50]]
+  },
+  "TowerDefense/Level/Challenge/Gold/Challenge_LEVEL_A037.png": {
+    "exclude_boxes": [[145, 77, 45, 50]]
+  },
+  "TowerDefense/Level/Challenge/Gold/Challenge_LEVEL_A038.png": {
+    "exclude_boxes": [[145, 77, 45, 50]]
+  },
+  "TowerDefense/Level/Challenge/Gold/Challenge_LEVEL_A039.png": {
+    "exclude_boxes": [[145, 77, 45, 50]]
+  },
+  "TowerDefense/Level/MiniGames/MiniGames_LEVEL_A0501.png": {
+    "exclude_boxes": [[376, 55, 36, 115]]
+  },
+  "TowerDefense/Level/MiniGames/MiniGames_LEVEL_A0502.png": {
+    "exclude_boxes": [[376, 55, 36, 115]]
+  },
+  "TowerDefense/Level/MiniGames/MiniGames_LEVEL_A0602.png": {
+    "exclude_boxes": [[155, 70, 28, 60], [376, 55, 36, 115]]
+  },
+  "TowerDefense/Level/MiniGames/MiniGames_LEVEL_A0603.png": {
+    "exclude_boxes": [[155, 70, 28, 60], [376, 55, 36, 115]]
+  },
+  "TowerDefense/Level/MiniGames/MiniGames_LEVEL_A0304.png": {
+    "include_boxes": [[330, 90, 55, 60]]
+  },
+  "TowerDefense/Level/MiniGames/MiniGames_LEVEL_A0901.png": {
+    "exclude_boxes": [[120, 55, 80, 115], [382, 55, 30, 115]]
+  },
+  "TowerDefense/Level/MiniGames/MiniGames_LEVEL_A0903.png": {
+    "exclude_boxes": [[120, 55, 80, 115], [382, 55, 30, 115]]
+  },
+  "TowerDefense/Level/MiniGames/MiniGames_LEVEL_A0905.png": {
+    "exclude_boxes": [[382, 55, 30, 115]]
+  },
+  "TowerDefense/Level/MiniGames/MiniGames_LEVEL_A1701.png": {
+    "exclude_boxes": [[80, 55, 115, 75], [370, 55, 42, 115]]
+  },
+  "TowerDefense/Level/MiniGames/MiniGames_LEVEL_A1702.png": {
+    "include_boxes": [[190, 55, 180, 60]],
+    "exclude_boxes": [[80, 55, 115, 75], [370, 55, 42, 115]]
+  },
+  "TowerDefense/Level/MiniGames/MiniGames_LEVEL_A1703.png": {
+    "exclude_boxes": [[80, 55, 115, 75], [370, 55, 42, 115]]
+  },
+  "TowerDefense/Level/MiniGames/MiniGames_LEVEL_A1704.png": {
+    "exclude_boxes": [[80, 55, 115, 75], [370, 55, 42, 115]]
+  },
+  "TowerDefense/Level/Survival/Entertainment/Endless_LEVEL_B019.png": {
+    "exclude_boxes": [[100, 55, 80, 115]]
+  },
+  "TowerDefense/Level/Survival/Entertainment/Endless_LEVEL_B020.png": {
+    "exclude_boxes": [[100, 55, 80, 115]]
+  },
+  "TowerDefense/Level/Survival/Entertainment/Endless_LEVEL_B021.png": {
+    "exclude_boxes": [[100, 55, 80, 115]]
+  },
+  "TowerDefense/Level/Vase/YiZhiGame_LEVEL_vb020.png": {
+    "exclude_boxes": [[380, 55, 32, 115]]
+  },
+  "TowerDefense/Level/Vase/YiZhiGame_LEVEL_vb033.png": {
+    "exclude_boxes": [[380, 55, 32, 115]]
+  }
+}

@@ -6,7 +6,20 @@
 
 ## 下载
 
-请从 [Releases](https://github.com/NullAura/pvz-hybrid-v0.25-macos/releases/latest) 下载以下文件：
+仓库提供中文兼容版和完整英化版，两者使用独立的应用名称和存档目录，可以并存。
+
+### English Edition
+
+从 [最新 Release](https://github.com/NullAura/pvz-hybrid-v0.25-macos/releases/latest)
+下载：
+
+- `PVZ-Hybrid-v0.25-English-macOS-Installer.dmg`
+- `PVZ-Hybrid-v0.25-English-macOS-Installer.dmg.sha256`
+
+### 中文兼容版
+
+从 [v0.25-macos-r3](https://github.com/NullAura/pvz-hybrid-v0.25-macos/releases/tag/v0.25-macos-r3)
+下载：
 
 - `v0.25-macOS-Installer.dmg`
 - `v0.25-macOS-Installer.dmg.sha256`
@@ -14,7 +27,7 @@
 可在终端中校验文件完整性：
 
 ```sh
-shasum -a 256 -c v0.25-macOS-Installer.dmg.sha256
+shasum -a 256 -c PVZ-Hybrid-v0.25-English-macOS-Installer.dmg.sha256
 ```
 
 ## 兼容性
@@ -89,6 +102,12 @@ Rosetta 2 状态。升级安装会替换旧 App，但不会删除用户目录中
 
 安装器构建脚本、双语界面资源、Rosetta 检测逻辑与 Developer ID/公证参数
 位于 [`release-src/installer`](release-src/installer/README.md)。
+
+英文版应用启动器和安装器分别位于
+[`release-src/english`](release-src/english) 与
+[`release-src/installer-english`](release-src/installer-english/README.md)。
+人工维护的英文文本目录、图形本地化流程和一致性检查工具位于
+[`PvzEnglishLocalization`](.tools/PvzEnglishLocalization/README.md)。
 
 对上游程序集进行兼容性修复的可复现工具及使用方式位于
 [`PvzAssemblyPatcher`](.tools/PvzAssemblyPatcher/README.md)。
