@@ -24,6 +24,7 @@ from tscn_layout_overrides import (
     apply_layout_overrides,
     load_layout_overrides,
 )
+from level_gameplay_fixes import apply_gameplay_fixes, load_gameplay_fixes
 
 
 PCK_MAGIC = b"GDPC"
@@ -465,6 +466,7 @@ def main() -> int:
     parser.add_argument("--localized-pck", required=True, type=Path)
     parser.add_argument("--translations", required=True, type=Path)
     parser.add_argument("--layout-overrides", type=Path)
+    parser.add_argument("--gameplay-fixes", type=Path)
     parser.add_argument("--resource-manifest", required=True, type=Path)
     parser.add_argument("--graphic-report", required=True, type=Path)
     parser.add_argument("--allow-changed", action="append", default=[])
@@ -477,6 +479,7 @@ def main() -> int:
     localized = read_pack(args.localized_pck.resolve())
     translations = load_string_map(args.translations)
     layout_overrides = load_layout_overrides(args.layout_overrides)
+    gameplay_fixes = load_gameplay_fixes(args.gameplay_fixes)
     manifest_counts, expected_changed, expected_added = (
         load_resource_manifest(args.resource_manifest)
     )
@@ -551,6 +554,12 @@ def main() -> int:
                     expected_text,
                     resource_path,
                     layout_overrides,
+                )
+            if resource_path.endswith(".json"):
+                expected_text, _ = apply_gameplay_fixes(
+                    expected_text,
+                    resource_path,
+                    gameplay_fixes,
                 )
         except (UnicodeDecodeError, ValueError) as error:
             errors.append(f"{resource_path}: {error}")

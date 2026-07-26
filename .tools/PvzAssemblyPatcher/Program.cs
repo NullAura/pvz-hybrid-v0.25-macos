@@ -506,16 +506,24 @@ var validArguments =
       command == "inspect-strings" ||
       command == "patch" ||
       command == "inspect-victory" ||
-      command == "patch-victory")) ||
+      command == "patch-victory" ||
+      command == "patch-wave-resume" ||
+      command == "patch-english-update")) ||
     (args.Length == 3 &&
      (command == "patch-strings" ||
-      command == "compare-logic"));
+      command == "compare-logic" ||
+      command == "inspect-method" ||
+      command == "inspect-field" ||
+      command == "inspect-callers"));
 if (!validArguments)
 {
     Console.Error.WriteLine(
-        "Usage: PvzAssemblyPatcher <inspect|inspect-strings|patch|inspect-victory|patch-victory> <PlantsVsZombies.dll>\n" +
+        "Usage: PvzAssemblyPatcher <inspect|inspect-strings|patch|inspect-victory|patch-victory|patch-wave-resume|patch-english-update> <PlantsVsZombies.dll>\n" +
         "       PvzAssemblyPatcher patch-strings <PlantsVsZombies.dll> <translations.json>\n" +
-        "       PvzAssemblyPatcher compare-logic <baseline.dll> <localized.dll>");
+        "       PvzAssemblyPatcher compare-logic <baseline.dll> <localized.dll>\n" +
+        "       PvzAssemblyPatcher inspect-method <PlantsVsZombies.dll> <method-name-fragment>\n" +
+        "       PvzAssemblyPatcher inspect-field <PlantsVsZombies.dll> <field-name-fragment>\n" +
+        "       PvzAssemblyPatcher inspect-callers <PlantsVsZombies.dll> <method-name-fragment>");
     return 2;
 }
 
@@ -530,6 +538,91 @@ var readerParameters = new ReaderParameters
 };
 
 using var assembly = AssemblyDefinition.ReadAssembly(assemblyPath, readerParameters);
+
+if (args[0] == "inspect-method")
+{
+    var fragment = args[2];
+    var matchingMethods = EnumerateTypes(assembly.MainModule.Types)
+        .SelectMany(type => type.Methods)
+        .Where(method =>
+            method.FullName.Contains(fragment, StringComparison.OrdinalIgnoreCase))
+        .OrderBy(method => method.FullName)
+        .ToArray();
+    if (matchingMethods.Length == 0)
+    {
+        Console.Error.WriteLine($"No methods matched: {fragment}");
+        return 1;
+    }
+
+    foreach (var method in matchingMethods)
+    {
+        Console.WriteLine($"\nMethod: {method.FullName}");
+        if (!method.HasBody)
+        {
+            Console.WriteLine("<no body>");
+            continue;
+        }
+        foreach (var instruction in method.Body.Instructions)
+        {
+            Console.WriteLine(instruction);
+        }
+    }
+    return 0;
+}
+
+if (args[0] == "inspect-field")
+{
+    var fragment = args[2];
+    var matchingMethods = EnumerateTypes(assembly.MainModule.Types)
+        .SelectMany(type => type.Methods)
+        .Where(method =>
+            method.HasBody &&
+            method.Body.Instructions.Any(instruction =>
+                instruction.Operand is FieldReference field &&
+                field.FullName.Contains(
+                    fragment,
+                    StringComparison.OrdinalIgnoreCase)))
+        .OrderBy(method => method.FullName)
+        .ToArray();
+    if (matchingMethods.Length == 0)
+    {
+        Console.Error.WriteLine($"No field references matched: {fragment}");
+        return 1;
+    }
+
+    foreach (var method in matchingMethods)
+    {
+        Console.WriteLine(method.FullName);
+    }
+    return 0;
+}
+
+if (args[0] == "inspect-callers")
+{
+    var fragment = args[2];
+    var matchingMethods = EnumerateTypes(assembly.MainModule.Types)
+        .SelectMany(type => type.Methods)
+        .Where(method =>
+            method.HasBody &&
+            method.Body.Instructions.Any(instruction =>
+                instruction.Operand is MethodReference called &&
+                called.FullName.Contains(
+                    fragment,
+                    StringComparison.OrdinalIgnoreCase)))
+        .OrderBy(method => method.FullName)
+        .ToArray();
+    if (matchingMethods.Length == 0)
+    {
+        Console.Error.WriteLine($"No method calls matched: {fragment}");
+        return 1;
+    }
+
+    foreach (var method in matchingMethods)
+    {
+        Console.WriteLine(method.FullName);
+    }
+    return 0;
+}
 
 if (args[0] == "compare-logic")
 {
@@ -651,13 +744,21 @@ if (args[0] == "inspect-strings")
 if (args[0] == "inspect-victory")
 {
     var registry = assembly.MainModule.Types.Single(t => t.Name == "TowerDefenseBattleCharacterRegistry");
-    var inspectedMethods = new[]
+    var wave = assembly.MainModule.Types.Single(t => t.Name == "TowerDefenseBattleFeatureWave");
+    var inspectedMethods = new List<MethodDefinition>
     {
         registry.Methods.Single(m => m.Name == "GetCleanCharactersList"),
         registry.Methods.Single(m => m.Name == "GetZombieCount"),
         registry.Methods.Single(m => m.Name == "TryGetFinalWaveTarget"),
         registry.Methods.Single(m => m.Name == "IsFinalWaveTargetCandidate"),
+        wave.Methods.Single(m => m.Name == "WavePhysicsProcess" && m.Parameters.Count == 1),
     };
+    var waveCounter = wave.Methods.FirstOrDefault(
+        m => m.Name == "CountActiveWaveEnemiesForVictory");
+    if (waveCounter is not null)
+    {
+        inspectedMethods.Add(waveCounter);
+    }
 
     foreach (var method in inspectedMethods)
     {
@@ -694,6 +795,271 @@ if (args[0] == "inspect-victory")
         }
     }
 
+    var blockingWaveFields = new HashSet<string>(StringComparer.Ordinal)
+    {
+        "awaitSpawn",
+        "readySetPlantOver",
+        "_pendingSpawnOperations",
+        "waveStart",
+        "spawnOver",
+    };
+    Console.WriteLine("\nMethods referencing wave-progression state:");
+    foreach (var method in EnumerateTypes(assembly.MainModule.Types)
+                 .SelectMany(type => type.Methods)
+                 .Where(method =>
+                     method.HasBody &&
+                     method.Body.Instructions.Any(instruction =>
+                         instruction.Operand is FieldReference field &&
+                         field.DeclaringType.Name == wave.Name &&
+                         blockingWaveFields.Contains(field.Name)))
+                 .OrderBy(method => method.FullName))
+    {
+        var referencedFields = method.Body.Instructions
+            .Select(instruction => instruction.Operand)
+            .OfType<FieldReference>()
+            .Where(field =>
+                field.DeclaringType.Name == wave.Name &&
+                blockingWaveFields.Contains(field.Name))
+            .Select(field => field.Name)
+            .Distinct()
+            .Order()
+            .ToArray();
+        Console.WriteLine(
+            $"{method.FullName} [{string.Join(", ", referencedFields)}]");
+    }
+
+    return 0;
+}
+
+if (args[0] == "patch-wave-resume")
+{
+    var module = assembly.MainModule;
+    var wave = module.Types.Single(type =>
+        type.Name == "TowerDefenseBattleFeatureWave");
+    var isRunningField = module.ImportReference(wave.Fields.Single(field =>
+        field.Name == "isRunning"));
+    var waveFinalField = module.ImportReference(wave.Fields.Single(field =>
+        field.Name == "waveFinal"));
+    var currentWaveField = module.ImportReference(wave.Fields.Single(field =>
+        field.Name == "currentWave"));
+    var waveStartField = module.ImportReference(wave.Fields.Single(field =>
+        field.Name == "waveStart"));
+    var spawnOverField = module.ImportReference(wave.Fields.Single(field =>
+        field.Name == "spawnOver"));
+    var startWave = module.ImportReference(wave.Methods.Single(method =>
+        method.Name == "StartWave" && method.Parameters.Count == 0));
+    var loadFeature = wave.Methods.Single(method =>
+        method.Name == "LoadFeature" && method.Parameters.Count == 2);
+    var canSaveProgress = wave.Methods.Single(method =>
+        method.Name == "CanSaveProgress" && method.Parameters.Count == 1);
+    var pushWarning = module.ImportReference(
+        loadFeature.Body.Instructions
+            .Select(instruction => instruction.Operand)
+            .OfType<MethodReference>()
+            .First(method =>
+                method.Name == "PushWarning" &&
+                method.DeclaringType.FullName == "Godot.GD"));
+
+    const string repairMethodName = "RepairRestoredInitialWaveState";
+    var repairMethod = wave.Methods.FirstOrDefault(method =>
+        method.Name == repairMethodName);
+    var changes = 0;
+    if (repairMethod is null)
+    {
+        repairMethod = new MethodDefinition(
+            repairMethodName,
+            MethodAttributes.Private | MethodAttributes.HideBySig,
+            module.TypeSystem.Void);
+        repairMethod.Body.MaxStackSize = 1;
+        wave.Methods.Add(repairMethod);
+        var repairIl = repairMethod.Body.GetILProcessor();
+        var repairReturn = repairIl.Create(OpCodes.Ret);
+        foreach (var field in new[]
+                 {
+                     isRunningField,
+                     waveFinalField,
+                     currentWaveField,
+                     waveStartField,
+                     spawnOverField,
+                 })
+        {
+            repairIl.Append(repairIl.Create(OpCodes.Ldarg_0));
+            repairIl.Append(repairIl.Create(OpCodes.Ldfld, field));
+            repairIl.Append(repairIl.Create(OpCodes.Brtrue, repairReturn));
+        }
+        repairIl.Append(repairIl.Create(OpCodes.Ldarg_0));
+        repairIl.Append(repairIl.Create(OpCodes.Call, startWave));
+        repairIl.Append(repairIl.Create(
+            OpCodes.Ldstr,
+            "[Wave] Restored an initial checkpoint before wave startup; restarted the wave timer."));
+        repairIl.Append(repairIl.Create(OpCodes.Call, pushWarning));
+        repairIl.Append(repairReturn);
+        changes++;
+    }
+
+    if (!HasCall(loadFeature, repairMethodName))
+    {
+        var loadReturn = loadFeature.Body.Instructions.Last(instruction =>
+            instruction.OpCode == OpCodes.Ret);
+        var loadIl = loadFeature.Body.GetILProcessor();
+        loadIl.InsertBefore(loadReturn, loadIl.Create(OpCodes.Ldarg_0));
+        loadIl.InsertBefore(
+            loadReturn,
+            loadIl.Create(OpCodes.Call, module.ImportReference(repairMethod)));
+        changes++;
+    }
+
+    const string checkpointMethodName = "IsInitialWaveCheckpointReady";
+    var checkpointMethod = wave.Methods.FirstOrDefault(method =>
+        method.Name == checkpointMethodName);
+    if (checkpointMethod is null)
+    {
+        checkpointMethod = new MethodDefinition(
+            checkpointMethodName,
+            MethodAttributes.Private | MethodAttributes.HideBySig,
+            module.TypeSystem.Boolean);
+        checkpointMethod.Body.MaxStackSize = 1;
+        wave.Methods.Add(checkpointMethod);
+        var checkpointIl = checkpointMethod.Body.GetILProcessor();
+        var returnTrue = checkpointIl.Create(OpCodes.Ldc_I4_1);
+        foreach (var field in new[]
+                 {
+                     isRunningField,
+                     waveFinalField,
+                     currentWaveField,
+                     waveStartField,
+                 })
+        {
+            checkpointIl.Append(checkpointIl.Create(OpCodes.Ldarg_0));
+            checkpointIl.Append(checkpointIl.Create(OpCodes.Ldfld, field));
+            checkpointIl.Append(checkpointIl.Create(OpCodes.Brtrue, returnTrue));
+        }
+        checkpointIl.Append(checkpointIl.Create(OpCodes.Ldc_I4_0));
+        checkpointIl.Append(checkpointIl.Create(OpCodes.Ret));
+        checkpointIl.Append(returnTrue);
+        checkpointIl.Append(checkpointIl.Create(OpCodes.Ret));
+        changes++;
+    }
+
+    if (!HasCall(canSaveProgress, checkpointMethodName))
+    {
+        var saveIl = canSaveProgress.Body.GetILProcessor();
+        var originalStart = canSaveProgress.Body.Instructions[0];
+        foreach (var instruction in new[]
+                 {
+                     saveIl.Create(OpCodes.Ldarg_0),
+                     saveIl.Create(
+                         OpCodes.Call,
+                         module.ImportReference(checkpointMethod)),
+                     saveIl.Create(OpCodes.Brtrue, originalStart),
+                     saveIl.Create(OpCodes.Ldarg_1),
+                     saveIl.Create(
+                         OpCodes.Ldstr,
+                         "wave system has not finished initialization"),
+                     saveIl.Create(OpCodes.Stind_Ref),
+                     saveIl.Create(OpCodes.Ldc_I4_0),
+                     saveIl.Create(OpCodes.Ret),
+                 })
+        {
+            saveIl.InsertBefore(originalStart, instruction);
+        }
+        changes++;
+    }
+
+    if (changes == 0)
+    {
+        Console.WriteLine(
+            "Wave-resume safety is already patched; no changes were written.");
+        return 0;
+    }
+
+    WriteAssembly(assembly, assemblyPath);
+    Console.WriteLine(
+        $"Patched initial-wave save/resume safety: {assemblyPath}");
+    return 0;
+}
+
+if (args[0] == "patch-english-update")
+{
+    var module = assembly.MainModule;
+    var mainMenu = module.Types.Single(type => type.Name == "MainMenu");
+    const string helperName = "ShouldSkipUpstreamUpdatePrompt";
+    var helper = mainMenu.Methods.FirstOrDefault(method =>
+        method.Name == helperName);
+    var changes = 0;
+    if (helper is null)
+    {
+        helper = new MethodDefinition(
+            helperName,
+            MethodAttributes.Private | MethodAttributes.HideBySig,
+            module.TypeSystem.Boolean);
+        helper.Body.MaxStackSize = 1;
+        var helperIl = helper.Body.GetILProcessor();
+        helperIl.Append(helperIl.Create(OpCodes.Ldc_I4_1));
+        helperIl.Append(helperIl.Create(OpCodes.Ret));
+        mainMenu.Methods.Add(helper);
+        changes++;
+    }
+
+    var ready = mainMenu.Methods.Single(method =>
+        method.Name == "_Ready" && method.Parameters.Count == 0);
+    if (!HasCall(ready, helperName))
+    {
+        var skipGetter = ready.Body.Instructions.Single(instruction =>
+            instruction.Operand is MethodReference method &&
+            method.Name == "get_newVersionSkip" &&
+            method.DeclaringType.Name == "Global");
+        var readyIl = ready.Body.GetILProcessor();
+        skipGetter.OpCode = OpCodes.Pop;
+        skipGetter.Operand = null;
+        var loadThis = readyIl.Create(OpCodes.Ldarg_0);
+        readyIl.InsertAfter(skipGetter, loadThis);
+        readyIl.InsertAfter(
+            loadThis,
+            readyIl.Create(OpCodes.Call, module.ImportReference(helper)));
+        changes++;
+    }
+
+    var animeFinishState = mainMenu.NestedTypes.Single(type =>
+        type.Name.StartsWith("<AnimeFinish>d__", StringComparison.Ordinal));
+    var animeFinishMoveNext = animeFinishState.Methods.Single(method =>
+        method.Name == "MoveNext" && method.Parameters.Count == 0);
+    if (!HasCall(animeFinishMoveNext, helperName))
+    {
+        var skipGetter = animeFinishMoveNext.Body.Instructions.Single(
+            instruction =>
+                instruction.Operand is MethodReference method &&
+                method.Name == "get_newVersionSkip" &&
+                method.DeclaringType.Name == "Global");
+        var ownerField = animeFinishState.Fields.Single(field =>
+            field.Name == "<>4__this" &&
+            field.FieldType.Name == mainMenu.Name);
+        var moveNextIl = animeFinishMoveNext.Body.GetILProcessor();
+        skipGetter.OpCode = OpCodes.Pop;
+        skipGetter.Operand = null;
+        var loadState = moveNextIl.Create(OpCodes.Ldarg_0);
+        var loadMenu = moveNextIl.Create(
+            OpCodes.Ldfld,
+            module.ImportReference(ownerField));
+        moveNextIl.InsertAfter(skipGetter, loadState);
+        moveNextIl.InsertAfter(loadState, loadMenu);
+        moveNextIl.InsertAfter(
+            loadMenu,
+            moveNextIl.Create(OpCodes.Call, module.ImportReference(helper)));
+        changes++;
+    }
+
+    if (changes == 0)
+    {
+        Console.WriteLine(
+            "English update prompt behavior is already patched; " +
+            "no changes were written.");
+        return 0;
+    }
+
+    WriteAssembly(assembly, assemblyPath);
+    Console.WriteLine(
+        $"Disabled the incompatible upstream update prompt: {assemblyPath}");
     return 0;
 }
 

@@ -10,6 +10,7 @@ import shutil
 from pathlib import Path
 
 from audit_localization_parity import verify_tscn_structure
+from level_gameplay_fixes import apply_gameplay_fixes, load_gameplay_fixes
 from tscn_layout_overrides import (
     apply_layout_overrides,
     load_layout_overrides,
@@ -60,12 +61,14 @@ def main() -> int:
     parser.add_argument("--translations", type=Path, required=True)
     parser.add_argument("--english-translation", type=Path, required=True)
     parser.add_argument("--layout-overrides", type=Path)
+    parser.add_argument("--gameplay-fixes", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--manifest", type=Path, required=True)
     args = parser.parse_args()
 
     translations = load_dictionary(args.translations)
     layout_overrides = load_layout_overrides(args.layout_overrides)
+    gameplay_fixes = load_gameplay_fixes(args.gameplay_fixes)
     if args.output.exists():
         shutil.rmtree(args.output)
     args.output.mkdir(parents=True)
@@ -88,6 +91,13 @@ def main() -> int:
                 relative_path.as_posix(),
                 layout_overrides,
             )
+        gameplay_fix_count = 0
+        if relative_path.suffix == ".json":
+            patched, gameplay_fix_count = apply_gameplay_fixes(
+                patched,
+                relative_path.as_posix(),
+                gameplay_fixes,
+            )
         if relative_path.as_posix() == "project.godot":
             translation_setting = re.compile(
                 r'^locale/translations=PackedStringArray\(.*\)$',
@@ -102,7 +112,7 @@ def main() -> int:
             if forced != patched:
                 patched = forced
                 count += 1
-        if count == 0 and layout_count == 0:
+        if count == 0 and layout_count == 0 and gameplay_fix_count == 0:
             continue
         if relative_path.suffix == ".tscn":
             verify_tscn_structure(
@@ -128,6 +138,7 @@ def main() -> int:
                 "path": relative_path.as_posix(),
                 "replacements": count,
                 "layout_overrides": layout_count,
+                "gameplay_fixes": gameplay_fix_count,
             }
         )
 

@@ -1,0 +1,47 @@
+{
+  "fixes": [
+    {
+      "path": "Asset/Config/Level/TowerDefense/Challenge/Diamond/Challenge_Level_Diamond8_1_D.json",
+      "reason": "The minimum and maximum next-wave delays were reversed.",
+      "operations": [
+        {
+          "keys": ["WaveManager", "SpawnColStart"],
+          "before": 30,
+          "after": 25
+        },
+        {
+          "keys": ["WaveManager", "SpawnColEnd"],
+          "before": 25,
+          "after": 30
+        }
+      ]
+    },
+    {
+      "path": "Asset/Config/Level/TowerDefense/Challenge/Diamond/Challenge_Level_Diamond9_5_D.json",
+      "reason": "The minimum and maximum next-wave delays were reversed.",
+      "operations": [
+        {
+          "keys": ["WaveManager", "SpawnColStart"],
+          "before": 25.0,
+          "after": 20.0
+        },
+        {
+          "keys": ["WaveManager", "SpawnColEnd"],
+          "before": 20.0,
+          "after": 25.0
+        }
+      ]
+    },
+    {
+      "path": "Asset/Config/Level/TowerDefense/MiniGames/MiniGames_Level1_4.json",
+      "reason": "Wave 15 omitted the Peashooter Zombie count; adjacent waves use one at this point in the progression.",
+      "operations": [
+        {
+          "keys": ["WaveManager", "Wave", 14, "Spawn", 5, "Num"],
+          "before": null,
+          "after": 1
+        }
+      ]
+    }
+  ]
+}

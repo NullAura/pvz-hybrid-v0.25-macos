@@ -19,11 +19,21 @@ dotnet run --project .tools/PvzAssemblyPatcher -- \
 
 dotnet run --project .tools/PvzAssemblyPatcher -- \
   patch-victory /path/to/PlantsVsZombies.dll
+
+dotnet run --project .tools/PvzAssemblyPatcher -- \
+  patch-wave-resume /path/to/PlantsVsZombies.dll
+
+dotnet run --project .tools/PvzAssemblyPatcher -- \
+  patch-english-update /path/to/PlantsVsZombies.dll
 ```
 
 - `patch` 修复游戏指令回调的参数展开逻辑。
 - `patch-victory` 修复友方、魅惑及玩家控制僵尸阻塞波次或通关的问题。
+- `patch-wave-resume` 修复首波启动前保存后，恢复关卡时波次系统保持停止的
+  问题；同时禁止再次写入这种未完成初始化的检查点。
+- `patch-english-update` 保留版本信息和手动更新链接，但不再用中文版上游更新
+  弹窗阻断英文版主菜单。
 - `inspect` 和 `inspect-victory` 只输出相关 IL，不写入程序集。
 
-两个补丁命令均可重复执行；目标逻辑已修复时不会再次改写文件。补丁仅适用于
+四个补丁命令均可重复执行；目标逻辑已修复时不会再次改写文件。补丁仅适用于
 当前仓库所对应的 v0.25 程序集，更新上游游戏后应重新检查目标类型和 IL。

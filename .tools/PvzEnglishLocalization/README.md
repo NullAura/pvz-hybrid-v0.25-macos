@@ -42,6 +42,16 @@
 程序集则使用 `PvzAssemblyPatcher compare-logic` 比较全部类型、字段、方法、
 局部变量、IL 指令、跳转和异常处理结构，只允许 `ldstr` 的可见字符串值不同。
 
+`audit_level_configs.py` 会解析中英文 PCK 中的全部关卡 JSON，检查文件集合、
+对象结构、数组顺序和所有非字符串字段，并验证波次数量、刷怪数量、行号、
+出生列范围及动态波次参数。英文文本可以不同，其他玩法数据必须与基准一致。
+
+少量确认来自上游的关卡配置错误记录在 `level_gameplay_fixes.json`，由
+`level_gameplay_fixes.py` 按完整资源路径、字段路径和修复前值精确应用。
+构建与审计工具通过 `--gameplay-fixes` 读取同一份清单；修复前值不匹配时会
+立即失败，避免上游版本变化后误改其他数据。运行时的波次恢复修复由
+`PvzAssemblyPatcher patch-wave-resume` 应用，不会读取、删除或重置玩家存档。
+
 翻译脚本可同时通过 `--messages-json` 导出按哈希表遍历顺序排列的英文消息。
 随后使用 Godot 4.7 执行：
 

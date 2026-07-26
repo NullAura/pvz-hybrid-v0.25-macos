@@ -21,6 +21,12 @@ def main() -> int:
         help="Extract only paths ending in this suffix; may be repeated.",
     )
     parser.add_argument(
+        "--prefix",
+        action="append",
+        default=[],
+        help="Extract only paths beginning with this prefix; may be repeated.",
+    )
+    parser.add_argument(
         "--path",
         action="append",
         default=[],
@@ -44,6 +50,9 @@ def main() -> int:
 
     pack = read_pack(args.pck)
     suffixes = tuple(args.suffix)
+    prefixes = tuple(
+        value.removeprefix("res://").lstrip("/") for value in args.prefix
+    )
     paths = {value.removeprefix("res://").lstrip("/") for value in args.path}
     if args.path_manifest:
         manifest = json.loads(args.path_manifest.read_text(encoding="utf-8"))
@@ -57,9 +66,12 @@ def main() -> int:
         entry
         for entry in pack.entries.values()
         if (
-            (not suffixes and not paths)
+            (not suffixes and not prefixes and not paths)
             or entry.path in paths
-            or (suffixes and entry.path.endswith(suffixes))
+            or (
+                (not suffixes or entry.path.endswith(suffixes))
+                and (not prefixes or entry.path.startswith(prefixes))
+            )
         )
     ]
     for entry in selected:
