@@ -69,6 +69,8 @@ def main() -> int:
             (not suffixes and not prefixes and not paths)
             or entry.path in paths
             or (
+                (suffixes or prefixes)
+                and
                 (not suffixes or entry.path.endswith(suffixes))
                 and (not prefixes or entry.path.startswith(prefixes))
             )
